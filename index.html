@@ -4,53 +4,158 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Contatore Posto di Controllo</title>
 <style>
-  body { font-family: Arial, sans-serif; background: #111; color: white; text-align: center; padding: 15px; margin: 0; }
-  h2 { margin-bottom: 20px; }
-  .card { background: #222; border-radius: 18px; padding: 15px; margin: 12px 0; }
-  .card h3 { margin: 0 0 10px 0; font-size: 20px; color: #bbb; }
-  .num { font-size: 48px; font-weight: bold; margin-bottom: 10px; }
-  .btn-container { display: flex; gap: 10px; justify-content: center; }
-  button { font-size: 24px; padding: 15px; border: 0; border-radius: 12px; font-weight: bold; touch-action: manipulation; }
+  body {
+    font-family: Arial, sans-serif;
+    background: #111;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+  }
+  h2 { margin: 5px 0 10px 0; font-size: 20px; }
+ 
+  /* Griglia principale per eliminare lo scrolling */
+  .grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    flex-grow: 1;
+  }
+ 
+  /* La card TG occupa entrambe le colonne in alto */
+  .card-tg {
+    grid-column: span 2;
+    background: #2c3e50; /* Colore leggermente diverso per evidenziarlo */
+  }
+ 
+  .card {
+    background: #222;
+    border-radius: 14px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+ 
+  .card h3 { margin: 0; font-size: 16px; color: #bbb; }
+  .num { font-size: 38px; font-weight: bold; margin: 2px 0; }
+ 
+  /* Tasti + e - affiancati nelle card */
+  .btn-container {
+    display: flex;
+    gap: 8px;
+  }
+  button {
+    font-size: 20px;
+    padding: 12px;
+    border: 0;
+    border-radius: 10px;
+    font-weight: bold;
+    touch-action: manipulation;
+    cursor: pointer;
+  }
   .plus { background: #2ecc71; color: white; flex: 2; }
   .minus { background: #e74c3c; color: white; flex: 1; }
-  .copy { background: #3498db; color: white; width: 100%; margin-top: 15px; }
-  .reset { background: #f39c12; color: white; width: 100%; margin-top: 10px; }
-  .summary { font-size: 18px; background: #000; padding: 15px; border-radius: 12px; margin-top: 20px; word-wrap: break-word; }
+ 
+  /* Sezione comandi e riepilogo in basso */
+  .footer {
+    margin-top: 10px;
+  }
+  .summary { font-size: 15px; background: #000; padding: 10px; border-radius: 10px; word-wrap: break-word; margin-bottom: 8px; }
+  .action-btns { display: flex; gap: 10px; }
+  .copy { background: #3498db; color: white; flex: 1; font-size: 18px; padding: 14px; }
+  .reset { background: #f39c12; color: white; flex: 1; font-size: 18px; padding: 14px; }
 </style>
 </head>
 <body>
-<h2>Contatore Posto di Controllo</h2>
-<div id="app"></div>
-<div class="summary" id="riepilogo"></div>
-<button class="copy" onclick="copia()">Copia riepilogo</button>
-<button class="reset" onclick="azzera()">Azzera conteggi</button>
+
+<h2>Posto di Controllo</h2>
+
+<div class="grid-container" id="app"></div>
+
+<div class="footer">
+  <div class="summary" id="riepilogo"></div>
+  <div class="action-btns">
+    <button class="copy" onclick="copia()">Copia</button>
+    <button class="reset" onclick="azzera()">Azzera</button>
+  </div>
+</div>
+
 <script>
-let dati = JSON.parse(localStorage.getItem("contatore")) || { tg: 0, itaNeg: 0, itaPos: 0, straPos: 0, straNeg: 0 };
-const nomi = { tg: "Tg", itaNeg: "Ita neg", itaPos: "Ita pos", straPos: "Stra pos", straNeg: "Stra neg" };
-function salva() { localStorage.setItem("contatore", JSON.stringify(dati)); }
-function cambia(k, v) { dati[k] = Math.max(0, dati[k] + v); salva(); render(); }
-function testo() { return `${dati.tg} tg con ${dati.itaNeg} ita neg, ${dati.itaPos} ita pos, ${dati.straPos} stra pos, ${dati.straNeg} stra neg`; }
+let dati = JSON.parse(localStorage.getItem("contatore")) || {
+  tg: 0, itaNeg: 0, itaPos: 0, straPos: 0, straNeg: 0
+};
+
+const nomi = {
+  tg: "Targhe Totali (Tg)",
+  itaNeg: "Ita Neg",
+  itaPos: "Ita Pos",
+  straPos: "Stra Pos",
+  straNeg: "Stra Neg"
+};
+
+function salva() {
+  localStorage.setItem("contatore", JSON.stringify(dati));
+}
+
+function cambia(k, v) {
+  dati[k] = Math.max(0, dati[k] + v);
+  salva();
+  render();
+}
+
+function testo() {
+  return `${dati.tg} tg con ${dati.itaNeg} ita neg, ${dati.itaPos} ita pos, ${dati.straPos} stra pos, ${dati.straNeg} stra neg`;
+}
+
 function render() {
   let html = "";
   for (let k in dati) {
-    html += `<div class="card"><h3>${nomi[k]}</h3><div class="num">${dati[k]}</div><div class="btn-container"><button class="minus" onclick="cambia('${k}',-1)">-1</button><button class="plus" onclick="cambia('${k}',1)">+1</button></div></div>`;
+    let isTg = k === 'tg' ? 'card-tg' : '';
+    html += `
+    <div class="card ${isTg}">
+      <h3>${nomi[k]}</h3>
+      <div class="num">${dati[k]}</div>
+      <div class="btn-container">
+        <button class="minus" onclick="cambia('${k}',-1)">-1</button>
+        <button class="plus" onclick="cambia('${k}',1)">+1</button>
+      </div>
+    </div>`;
   }
   document.getElementById("app").innerHTML = html;
   document.getElementById("riepilogo").innerText = testo();
 }
+
 function copia() {
   const t = testo();
   if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(t).then(() => alert("Riepilogo copiato!")).catch(() => fallbackCopia(t));
-  } else { fallbackCopia(t); }
+    navigator.clipboard.writeText(t).then(() => alert("Copiato!")).catch(() => fallbackCopia(t));
+  } else {
+    fallbackCopia(t);
+  }
 }
+
 function fallbackCopia(text) {
   const ta = document.createElement("textarea"); ta.value = text; ta.style.position = "fixed"; document.body.appendChild(ta); ta.focus(); ta.select();
-  try { document.execCommand('copy'); alert("Riepilogo copiato!"); } catch (err) { alert("Errore copia."); }
+  try { document.execCommand('copy'); alert("Copiato!"); } catch (err) { alert("Errore copia."); }
   document.body.removeChild(ta);
 }
-function azzera() { if (confirm("Azzerare tutti i conteggi?")) { for (let k in dati) dati[k] = 0; salva(); render(); } }
+
+function azzera() {
+  if (confirm("Azzerare tutto?")) {
+    for (let k in dati) dati[k] = 0;
+    salva();
+    render();
+  }
+}
+
 render();
 </script>
+
 </body>
 </html>
