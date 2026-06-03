@@ -2,24 +2,28 @@
 <html lang="it">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Contatore Posto di Controllo V8</title>
+<title>Contatore Posto di Controllo Definitivo</title>
 <style>
   body {
     font-family: Arial, sans-serif;
     background: #111;
     color: white;
     text-align: center;
-    padding: 10px;
+    padding: 12px 10px;
     margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     box-sizing: border-box;
   }
-  h2 { margin: 0 0 10px 0; font-size: 18px; }
+  h2 { margin: 2px 0 8px 0; font-size: 18px; }
   
-  /* Blocco Unico Targhe in alto - SUPER FORZATO */
+  /* Blocco Unico Targhe in alto - GIGANTE */
   .top-tg-block {
     background: #2c3e50;
     border-radius: 16px;
-    padding: 14px 12px;
+    padding: 18px 14px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -42,39 +46,39 @@
     gap: 8px;
   }
   .tg-label-num {
-    font-size: 15px;
+    font-size: 16px;
     color: #e2e8f0;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
   .tg-label-num span {
-    font-size: 36px;
+    font-size: 38px;
     font-weight: bold;
     color: white;
   }
 
-  /* FORZATURA ABSOLUTA ALTEZZA TASTI TARGA */
+  /* Altezza blindata per i tasti targa */
   .btn-tg-v {
-    height: 65px !important; 
-    min-height: 65px !important;
-    font-size: 22px !important;
-    border-radius: 12px !important;
+    height: 70px !important; 
+    min-height: 70px !important;
+    font-size: 24px !important;
+    border-radius: 14px;
     font-weight: bold;
-    display: block !important;
-    width: 100%;
   }
 
-  /* GRIGLIA PERSONE GIGANTE */
+  /* GRIGLIA PERSONE FLUIDA E MASSICCIA */
   .flex-grid {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    flex-grow: 1;
     margin-bottom: 12px;
   }
   .flex-row {
     display: flex;
     gap: 12px;
+    flex: 1;
   }
   
   .card {
@@ -89,8 +93,8 @@
     border: 1px solid #333;
   }
   
-  .card h3 { margin: 0 0 6px 0; font-size: 15px; color: #bbb; }
-  .num { font-size: 36px; font-weight: bold; margin: 4px 0; line-height: 1; }
+  .card h3 { margin: 0 0 4px 0; font-size: 15px; color: #bbb; }
+  .num { font-size: 38px; font-weight: bold; margin: 2px 0; line-height: 1; }
   
   .btn-container {
     display: flex;
@@ -105,58 +109,26 @@
     cursor: pointer;
   }
   
-  /* FORZATURA TASTI PERSONE */
+  /* Altezza blindata per i tasti persone */
   .card button {
-    font-size: 22px !important;   
-    height: 65px !important;      
-    min-height: 65px !important;
-    border-radius: 12px;
+    font-size: 24px !important;   
+    height: 70px !important;      
+    min-height: 70px !important;
+    border-radius: 14px;
   }
   
   .plus { background: #2ecc71; color: white; flex: 2; }
   .plus-sosta { background: #3498db; color: white; flex: 2; }
   .minus { background: #e74c3c; color: white; flex: 1; }
 
-  /* SEZIONE TARGA UNIVERSALE */
-  .search-block {
-    background: #1e1e1e;
-    padding: 12px;
-    border-radius: 14px;
-    margin-bottom: 12px;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    border: 1px solid #444;
-  }
-  .search-input {
-    flex: 2;
-    background: #000;
-    border: 1px solid #555;
-    color: #fff;
-    padding: 14px 10px;
-    font-size: 20px;
-    border-radius: 8px;
-    text-transform: uppercase;
-    text-align: center;
-    font-weight: bold;
-  }
-  .search-btn {
-    flex: 1;
-    background: #9b59b6; 
-    color: white;
-    font-size: 18px;
-    border-radius: 8px;
-    height: 52px;
-    font-weight: bold;
-  }
-
+  /* COMPATTO E COMODO IN BASSO */
   .footer {
-    margin-top: 4px;
+    margin-top: 2px;
   }
-  .summary { font-size: 15px; background: #000; padding: 12px; border-radius: 10px; word-wrap: break-word; margin-bottom: 10px; min-height: 24px; text-align: left; white-space: pre-line; border: 1px solid #222; }
-  .action-btns { display: flex; gap: 10px; }
-  .copy { background: #2980b9; color: white; flex: 1; font-size: 18px; padding: 16px; border-radius: 12px; }
-  .reset { background: #f39c12; color: white; flex: 1; font-size: 18px; padding: 16px; border-radius: 12px; }
+  .summary { font-size: 16px; background: #000; padding: 14px; border-radius: 12px; word-wrap: break-word; margin-bottom: 12px; min-height: 30px; text-align: left; white-space: pre-line; border: 1px solid #222; }
+  .action-btns { display: flex; gap: 12px; }
+  .copy { background: #2980b9; color: white; flex: 1; font-size: 20px; padding: 16px; border-radius: 12px; }
+  .reset { background: #f39c12; color: white; flex: 1; font-size: 20px; padding: 16px; border-radius: 12px; }
 </style>
 </head>
 <body>
@@ -218,11 +190,6 @@
   </div>
 </div>
 
-<div class="search-block">
-  <input type="url" id="targaInput" class="search-input" placeholder="DIGITA TARGA..." autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false">
-  <button class="search-btn" onclick="processaTarga()">Controlla</button>
-</div>
-
 <div class="footer">
   <div class="summary" id="riepilogo"></div>
   <div class="action-btns">
@@ -269,34 +236,6 @@ function cambia(k, v) {
   dati[k] = Math.max(0, dati[k] + v);
   salva(); 
   aggiornaSchermata();
-}
-
-function processaTarga() {
-  riproduciSuono();
-  let targa = document.getElementById("targaInput").value.trim().toUpperCase().replace(/\s+/g, '');
-  if (!targa) {
-    alert("Inserisci una targa valida!");
-    return;
-  }
-  
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(targa).then(() => lanciaRicerca(targa)).catch(() => fallbackRicerca(targa));
-  } else {
-    fallbackRicerca(targa);
-  }
-}
-
-function lanciaRicerca(targa) {
-  // Apre Google cercando direttamente la targa, un metodo rapido, leggero e immune da blocchi
-  let url = `https://www.google.com/search?q=targa+${targa}`;
-  window.open(url, '_blank');
-}
-
-function fallbackRicerca(text) {
-  const ta = document.createElement("textarea"); ta.value = text; ta.style.position = "fixed"; document.body.appendChild(ta); ta.focus(); ta.select();
-  try { document.execCommand('copy'); } catch (err) {}
-  document.body.removeChild(ta);
-  lanciaRicerca(text);
 }
 
 function testo() {
