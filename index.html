@@ -19,15 +19,15 @@
   }
   h2 { margin: 2px 0 6px 0; font-size: 16px; }
   
-  /* Blocco Unico Targhe in alto - ANCORA PIÙ GRANDE */
+  /* Blocco Unico Targhe in alto - GIGANTE */
   .top-tg-block {
     background: #2c3e50;
     border-radius: 16px;
-    padding: 26px 14px; /* Spazio verticale notevolmente aumentato */
+    padding: 24px 14px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     box-sizing: border-box;
     box-shadow: 0 6px 20px rgba(0,0,0,0.4);
     border: 1px solid #34495e;
@@ -35,7 +35,7 @@
   .tg-side-btns {
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Più spazio tra +1 e -1 */
+    gap: 10px;
     width: 28%;
   }
   .tg-center-display {
@@ -43,10 +43,10 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 12px; /* Molto più spazio tra le due scritte */
+    gap: 12px;
   }
   .tg-label-num {
-    font-size: 16px; /* Etichetta più visibile */
+    font-size: 16px;
     color: #e2e8f0;
     display: flex;
     justify-content: space-between;
@@ -54,42 +54,44 @@
     padding: 0 4px;
   }
   .tg-label-num span {
-    font-size: 38px; /* Numeri delle targhe giganti */
+    font-size: 38px;
     font-weight: bold;
     color: white;
   }
 
   /* Bottoni verticali per le targhe - EXTRA LARGE */
   .btn-tg-v {
-    padding: 14px 6px; /* Bottoni molto più alti e facili da premere */
-    font-size: 22px;   /* Scritte dei tasti molto più grandi (+1 S, -1 O, ecc.) */
+    padding: 14px 6px;
+    font-size: 22px;
     border-radius: 12px;
   }
 
-  /* Griglia per le persone sottostante - OTTIMIZZATA E COMPATTA */
+  /* Griglia per le persone sottostante - TASTI GRANDI COME LE TARGHE */
   .grid-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
+    gap: 10px;
     flex-grow: 1;
+    margin-bottom: 10px;
   }
   
   .card {
     background: #222;
-    border-radius: 12px;
-    padding: 6px 10px; /* Molto compatto per recuperare spazio */
+    border-radius: 14px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     box-sizing: border-box;
+    border: 1px solid #333;
   }
   
-  .card h3 { margin: 0; font-size: 13px; color: #999; }
-  .num { font-size: 28px; font-weight: bold; margin: 0; } /* Leggermente ridotto per compensare le targhe */
+  .card h3 { margin: 0 0 4px 0; font-size: 14px; color: #bbb; }
+  .num { font-size: 34px; font-weight: bold; margin: 2px 0; }
   
   .btn-container {
     display: flex;
-    gap: 6px;
+    gap: 10px;
   }
   button {
     border: 0;
@@ -98,24 +100,56 @@
     cursor: pointer;
   }
   
-  /* Bottoni delle persone leggermente più bassi */
+  /* Bottoni delle persone uniformati a quelli delle targhe */
   .card button {
-    font-size: 16px;
-    padding: 8px;
-    border-radius: 6px;
+    font-size: 22px;   /* Stessa dimensione enorme */
+    padding: 14px 6px; /* Stessa altezza massiccia */
+    border-radius: 12px;
   }
   
   .plus { background: #2ecc71; color: white; flex: 2; }
   .plus-sosta { background: #3498db; color: white; flex: 2; }
   .minus { background: #e74c3c; color: white; flex: 1; }
 
-  .footer {
-    margin-top: 8px;
+  /* NUOVA SEZIONE: CONTROLLO TARGA RAPIDO */
+  .search-block {
+    background: #1e1e1e;
+    padding: 10px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    border: 1px solid #444;
   }
-  .summary { font-size: 14px; background: #000; padding: 8px; border-radius: 10px; word-wrap: break-word; margin-bottom: 6px; min-height: 20px; text-align: left; white-space: pre-line; }
+  .search-input {
+    flex: 2;
+    background: #000;
+    border: 1px solid #555;
+    color: #fff;
+    padding: 12px;
+    font-size: 18px;
+    border-radius: 8px;
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: bold;
+  }
+  .search-btn {
+    flex: 1;
+    background: #9b59b6; /* Colore viola per distinguerlo */
+    color: white;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 8px;
+  }
+
+  .footer {
+    margin-top: 2px;
+  }
+  .summary { font-size: 14px; background: #000; padding: 10px; border-radius: 10px; word-wrap: break-word; margin-bottom: 8px; min-height: 20px; text-align: left; white-space: pre-line; }
   .action-btns { display: flex; gap: 8px; }
-  .copy { background: #2980b9; color: white; flex: 1; font-size: 16px; padding: 12px; border-radius: 8px; }
-  .reset { background: #f39c12; color: white; flex: 1; font-size: 16px; padding: 12px; border-radius: 8px; }
+  .copy { background: #2980b9; color: white; flex: 1; font-size: 18px; padding: 14px; border-radius: 10px; }
+  .reset { background: #f39c12; color: white; flex: 1; font-size: 18px; padding: 14px; border-radius: 10px; }
 </style>
 </head>
 <body>
@@ -179,6 +213,11 @@
 
 </div>
 
+<div class="search-block">
+  <input type="text" id="targaInput" class="search-input" placeholder="DIGITA TARGA..." autocomplete="off" autocapitalize="characters">
+  <button class="search-btn" onclick="verificaTargaExternal()">Controlla</button>
+</div>
+
 <div class="footer">
   <div class="summary" id="riepilogo"></div>
   <div class="action-btns">
@@ -229,6 +268,19 @@ function cambia(k, v) {
   dati[k] = Math.max(0, dati[k] + v);
   salva(); 
   aggiornaSchermata();
+}
+
+// Funzione di reindirizzamento per il controllo targa esterna
+function verificaTargaExternal() {
+  riproduciSuono();
+  let targa = document.getElementById("targaInput").value.trim().toUpperCase().replace(/\s+/g, '');
+  if (!targa) {
+    alert("Inserisci una targa valida prima!");
+    return;
+  }
+  // Utilizza il portale di ricerca rapida di Infotarga/Consap
+  let url = `https://www.infotarga.it/check.php?targa=${targa}`;
+  window.open(url, '_blank');
 }
 
 function testo() {
@@ -295,4 +347,5 @@ aggiornaSchermata();
 
 </body>
 </html>
+
 
