@@ -19,15 +19,50 @@
   }
   h2 { margin: 5px 0 10px 0; font-size: 20px; }
   
+  /* Blocco Unico Targhe in alto */
+  .top-tg-block {
+    background: #2c3e50;
+    border-radius: 14px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+  }
+  .tg-side-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 25%;
+  }
+  .tg-center-display {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+  }
+  .tg-label-num {
+    font-size: 14px;
+    color: #bbb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+  }
+  .tg-label-num span {
+    font-size: 26px;
+    font-weight: bold;
+    color: white;
+  }
+
+  /* Griglia per le persone sottostante */
   .grid-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
     flex-grow: 1;
-  }
-  
-  .card-tg {
-    background: #2c3e50;
   }
   
   .card {
@@ -37,17 +72,18 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    box-sizing: border-box;
   }
   
-  .card h3 { margin: 0; font-size: 15px; color: #bbb; }
-  .num { font-size: 38px; font-weight: bold; margin: 2px 0; }
+  .card h3 { margin: 0; font-size: 14px; color: #bbb; }
+  .num { font-size: 36px; font-weight: bold; margin: 2px 0; }
   
   .btn-container {
     display: flex;
     gap: 8px;
   }
   button {
-    font-size: 20px;
+    font-size: 18px;
     padding: 12px;
     border: 0;
     border-radius: 10px;
@@ -56,10 +92,15 @@
     cursor: pointer;
   }
   .plus { background: #2ecc71; color: white; flex: 2; }
-  /* Colore personalizzato azzurro per il tasto +1 della sosta */
   .plus-sosta { background: #3498db; color: white; flex: 2; }
   .minus { background: #e74c3c; color: white; flex: 1; }
   
+  /* Bottoni verticali per le targhe */
+  .btn-tg-v {
+    padding: 8px;
+    font-size: 16px;
+  }
+
   .footer {
     margin-top: 10px;
   }
@@ -73,7 +114,69 @@
 
 <h2>Posto di Controllo</h2>
 
-<div class="grid-container" id="app"></div>
+<!-- BLOCCO UNICO TARGHE -->
+<div class="top-tg-block">
+  <!-- Lato Sinistro: Tasti Sosta (Azzurri) -->
+  <div class="tg-side-btns">
+    <button class="plus-sosta btn-tg-v" onclick="cambia('tgSosta',1)">+1 S</button>
+    <button class="minus btn-tg-v" onclick="cambia('tgSosta',-1)">-1 S</button>
+  </div>
+  
+  <!-- Centro: Visualizzazione Numeri -->
+  <div class="tg-center-display">
+    <div class="tg-label-num">Sosta: <span id="val-tgSosta">0</span></div>
+    <div class="tg-label-num">Occupati: <span id="val-tg">0</span></div>
+  </div>
+  
+  <!-- Lato Destro: Tasti Occupanti (Verdi) -->
+  <div class="tg-side-btns">
+    <button class="plus btn-tg-v" onclick="cambia('tg',1)">+1 O</button>
+    <button class="minus btn-tg-v" onclick="cambia('tg',-1)">-1 O</button>
+  </div>
+</div>
+
+<!-- GRIGLIA PERSONE -->
+<div class="grid-container">
+  
+  <!-- FILA 1: ITALIANI -->
+  <div class="card">
+    <h3>Ita Neg</h3>
+    <div class="num" id="val-itaNeg">0</div>
+    <div class="btn-container">
+      <button class="minus" onclick="cambia('itaNeg',-1)">-1</button>
+      <button class="plus" onclick="cambia('itaNeg',1)">+1</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Ita Pos</h3>
+    <div class="num" id="val-itaPos">0</div>
+    <div class="btn-container">
+      <button class="minus" onclick="cambia('itaPos',-1)">-1</button>
+      <button class="plus" onclick="cambia('itaPos',1)">+1</button>
+    </div>
+  </div>
+
+  <!-- FILA 2: STRANIERI -->
+  <div class="card">
+    <h3>Stra Pos</h3>
+    <div class="num" id="val-straPos">0</div>
+    <div class="btn-container">
+      <button class="minus" onclick="cambia('straPos',-1)">-1</button>
+      <button class="plus" onclick="cambia('straPos',1)">+1</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Stra Neg</h3>
+    <div class="num" id="val-straNeg">0</div>
+    <div class="btn-container">
+      <button class="minus" onclick="cambia('straNeg',-1)">-1</button>
+      <button class="plus" onclick="cambia('straNeg',1)">+1</button>
+    </div>
+  </div>
+
+</div>
 
 <div class="footer">
   <div class="summary" id="riepilogo"></div>
@@ -88,15 +191,6 @@ let dati = JSON.parse(localStorage.getItem("contatore")) || {
   tgSosta: 0, tg: 0, itaNeg: 0, itaPos: 0, straPos: 0, straNeg: 0
 };
 
-const nomi = {
-  tgSosta: "Tg (Senza Occupanti)",
-  tg: "Tg (Con Occupanti)",
-  itaNeg: "Ita Neg",
-  itaPos: "Ita Pos",
-  straPos: "Stra Pos",
-  straNeg: "Stra Neg"
-};
-
 function salva() {
   localStorage.setItem("contatore", JSON.stringify(dati));
 }
@@ -104,7 +198,7 @@ function salva() {
 function cambia(k, v) {
   dati[k] = Math.max(0, dati[k] + v);
   salva(); 
-  render();
+  aggiornaSchermata();
 }
 
 function testo() {
@@ -133,24 +227,10 @@ function testo() {
   return righe.length > 0 ? righe.join("\n") : "Nessun controllo effettuato";
 }
 
-function render() {
-  let html = "";
+function aggiornaSchermata() {
   for (let k in dati) {
-    let isTg = (k === 'tg' || k === 'tgSosta') ? 'card-tg' : '';
-    // Applica la classe speciale 'plus-sosta' solo al contatore tgSosta, altrimenti usa 'plus' verde
-    let classePulsantePiu = (k === 'tgSosta') ? 'plus-sosta' : 'plus';
-    
-    html += `
-    <div class="card ${isTg}">
-      <h3>${nomi[k]}</h3>
-      <div class="num">${dati[k]}</div>
-      <div class="btn-container">
-        <button class="minus" onclick="cambia('${k}',-1)">-1</button>
-        <button class="${classePulsantePiu}" onclick="cambia('${k}',1)">+1</button>
-      </div>
-    </div>`;
+    document.getElementById(`val-${k}`).innerText = dati[k];
   }
-  document.getElementById("app").innerHTML = html;
   document.getElementById("riepilogo").innerText = testo();
 }
 
@@ -164,7 +244,7 @@ function copia() {
 }
 
 function fallbackCopia(text) {
-  const ta = document.createElement("textarea"); ta.value = text; ta.style.position = "fixed"; document.body.appendChild(ta); ta.focus(); ta.select();
+  const ta = document.createElement("textarea"); ta.value = text; ta.style.style.position = "fixed"; document.body.appendChild(ta); ta.focus(); ta.select();
   try { document.execCommand('copy'); alert("Copiato!"); } catch (err) { alert("Errore copia."); }
   document.body.removeChild(ta);
 }
@@ -173,14 +253,12 @@ function azzera() {
   if (confirm("Azzerare tutto?")) {
     for (let k in dati) dati[k] = 0;
     salva(); 
-    render();
+    aggiornaSchermata();
   }
 }
 
-render();
+aggiornaSchermata();
 </script>
 
 </body>
 </html>
-
-
