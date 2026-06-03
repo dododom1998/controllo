@@ -18,21 +18,19 @@
     box-sizing: border-box;
   }
   h2 { margin: 5px 0 10px 0; font-size: 20px; }
- 
-  /* Griglia principale per eliminare lo scrolling */
+  
   .grid-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
     flex-grow: 1;
   }
- 
-  /* La card TG occupa entrambe le colonne in alto */
+  
   .card-tg {
     grid-column: span 2;
-    background: #2c3e50; /* Colore leggermente diverso per evidenziarlo */
+    background: #2c3e50;
   }
- 
+  
   .card {
     background: #222;
     border-radius: 14px;
@@ -41,11 +39,10 @@
     flex-direction: column;
     justify-content: space-between;
   }
- 
+  
   .card h3 { margin: 0; font-size: 16px; color: #bbb; }
   .num { font-size: 38px; font-weight: bold; margin: 2px 0; }
- 
-  /* Tasti + e - affiancati nelle card */
+  
   .btn-container {
     display: flex;
     gap: 8px;
@@ -61,12 +58,11 @@
   }
   .plus { background: #2ecc71; color: white; flex: 2; }
   .minus { background: #e74c3c; color: white; flex: 1; }
- 
-  /* Sezione comandi e riepilogo in basso */
+  
   .footer {
     margin-top: 10px;
   }
-  .summary { font-size: 15px; background: #000; padding: 10px; border-radius: 10px; word-wrap: break-word; margin-bottom: 8px; }
+  .summary { font-size: 15px; background: #000; padding: 10px; border-radius: 10px; word-wrap: break-word; margin-bottom: 8px; min-height: 20px; }
   .action-btns { display: flex; gap: 10px; }
   .copy { background: #3498db; color: white; flex: 1; font-size: 18px; padding: 14px; }
   .reset { background: #f39c12; color: white; flex: 1; font-size: 18px; padding: 14px; }
@@ -99,18 +95,49 @@ const nomi = {
   straNeg: "Stra Neg"
 };
 
+const diciture = {
+  tg: "tg",
+  itaNeg: "ita neg",
+  itaPos: "ita pos",
+  straPos: "stra pos",
+  straNeg: "stra neg"
+};
+
 function salva() {
   localStorage.setItem("contatore", JSON.stringify(dati));
 }
 
 function cambia(k, v) {
   dati[k] = Math.max(0, dati[k] + v);
-  salva();
+  salva(); 
   render();
 }
 
 function testo() {
-  return `${dati.tg} tg con ${dati.itaNeg} ita neg, ${dati.itaPos} ita pos, ${dati.straPos} stra pos, ${dati.straNeg} stra neg`;
+  let parti = [];
+  
+  // Gestiamo prima le targhe separatamente per impostare bene la frase
+  if (dati.tg > 0) {
+    parti.push(`${dati.tg} tg`);
+  }
+  
+  // Controlliamo gli altri contatori e inseriamo solo quelli > 0
+  let dettagli = [];
+  if (dati.itaNeg > 0) dettagli.push(`${dati.itaNeg} ita neg`);
+  if (dati.itaPos > 0) dettagli.push(`${dati.itaPos} ita pos`);
+  if (dati.straPos > 0) dettagli.push(`${dati.straPos} stra pos`);
+  if (dati.straNeg > 0) dettagli.push(`${dati.straNeg} stra neg`);
+  
+  // Costruiamo la frase finale dinamicamente
+  if (parti.length > 0 && dettagli.length > 0) {
+    return `${parti[0]} con ${dettagli.join(", ")}`;
+  } else if (parti.length > 0) {
+    return `${parti[0]}`;
+  } else if (dettagli.length > 0) {
+    return `${dettagli.join(", ")}`;
+  }
+  
+  return "Nessun controllo effettuato";
 }
 
 function render() {
@@ -149,7 +176,7 @@ function fallbackCopia(text) {
 function azzera() {
   if (confirm("Azzerare tutto?")) {
     for (let k in dati) dati[k] = 0;
-    salva();
+    salva(); 
     render();
   }
 }
@@ -159,3 +186,4 @@ render();
 
 </body>
 </html>
+
