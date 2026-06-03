@@ -19,7 +19,7 @@
   }
   h2 { margin: 2px 0 8px 0; font-size: 18px; }
   
-  /* Blocco Unico Targhe in alto - GIGANTE */
+  /* Blocco Unico Targhe in alto - MASSICCIO */
   .top-tg-block {
     background: #2c3e50;
     border-radius: 16px;
@@ -58,7 +58,7 @@
     color: white;
   }
 
-  /* Altezza blindata per i tasti targa */
+  /* Altezza fissa e stabile per i tasti targa */
   .btn-tg-v {
     height: 70px !important; 
     min-height: 70px !important;
@@ -67,7 +67,7 @@
     font-weight: bold;
   }
 
-  /* GRIGLIA PERSONE FLUIDA E MASSICCIA */
+  /* GRIGLIA PERSONE FLUIDA E OTTIMIZZATA */
   .flex-grid {
     display: flex;
     flex-direction: column;
@@ -109,7 +109,7 @@
     cursor: pointer;
   }
   
-  /* Altezza blindata per i tasti persone */
+  /* Altezza fissa e stabile per i tasti persone */
   .card button {
     font-size: 24px !important;   
     height: 70px !important;      
@@ -135,6 +135,7 @@
 
 <h2>Posto di Controllo</h2>
 
+<!-- BLOCCO TARGHE GIGANTE -->
 <div class="top-tg-block">
   <div class="tg-side-btns">
     <button class="plus-sosta btn-tg-v" onclick="cambia('tgSosta',1)">+1 S</button>
@@ -144,12 +145,14 @@
     <div class="tg-label-num">Sosta: <span id="val-tgSosta">0</span></div>
     <div class="tg-label-num">Occupati: <span id="val-tg">0</span></div>
   </div>
+  .
   <div class="tg-side-btns">
     <button class="plus btn-tg-v" onclick="cambia('tg',1)">+1 O</button>
     <button class="minus btn-tg-v" onclick="cambia('tg',-1)">-1 O</button>
   </div>
 </div>
 
+<!-- GRIGLIA PERSONE -->
 <div class="flex-grid">
   <div class="flex-row">
     <div class="card">
@@ -190,6 +193,7 @@
   </div>
 </div>
 
+<!-- SEZIONE FINALE RIEPILOGO E COMANDI -->
 <div class="footer">
   <div class="summary" id="riepilogo"></div>
   <div class="action-btns">
