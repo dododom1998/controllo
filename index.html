@@ -2,33 +2,29 @@
 <html lang="it">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Contatore Posto di Controllo V5.1</title>
+<title>Contatore Posto di Controllo V6</title>
 <style>
   body {
     font-family: Arial, sans-serif;
     background: #111;
     color: white;
     text-align: center;
-    padding: 8px;
+    padding: 12px 10px;
     margin: 0;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    /* Rimosso il blocco rigido dell'altezza per evitare il rimpicciolimento automatico */
     box-sizing: border-box;
   }
-  h2 { margin: 2px 0 6px 0; font-size: 16px; }
+  h2 { margin: 0 0 10px 0; font-size: 18px; }
   
-  /* Blocco Unico Targhe in alto - ALTEZZA BLOCCATA E GIGANTE */
+  /* Blocco Unico Targhe in alto - BLINDATO E ENORME */
   .top-tg-block {
     background: #2c3e50;
     border-radius: 16px;
-    padding: 16px 14px;
-    height: 160px; /* Altezza totale del blocco bloccata per sicurezza */
+    padding: 16px 12px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     box-sizing: border-box;
     box-shadow: 0 6px 20px rgba(0,0,0,0.4);
     border: 1px solid #34495e;
@@ -37,54 +33,53 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    width: 28%;
+    width: 30%;
   }
   .tg-center-display {
-    width: 40%;
+    width: 36%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 12px;
+    gap: 8px;
   }
   .tg-label-num {
-    font-size: 16px;
+    font-size: 15px;
     color: #e2e8f0;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 4px;
   }
   .tg-label-num span {
-    font-size: 38px;
+    font-size: 36px;
     font-weight: bold;
     color: white;
   }
 
-  /* FORZATURA TOTALE BOTTONI TARGHE: Alti 65px fissi */
+  /* FORZATURA REALE TASTI TARGA (65px minimi garantiti) */
   .btn-tg-v {
     height: 65px !important; 
+    min-height: 65px !important;
     font-size: 22px !important;
     border-radius: 12px;
+    font-weight: bold;
   }
 
-  /* STRUTTURA FLUIDA PER LE PERSONE */
+  /* GRIGLIA PERSONE FLUIDA MA CON ALTEZZA MINIMA */
   .flex-grid {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    flex-grow: 1;
-    margin-bottom: 10px;
+    gap: 12px;
+    margin-bottom: 12px;
   }
   .flex-row {
     display: flex;
-    gap: 10px;
-    flex: 1;
+    gap: 12px;
   }
   
   .card {
     background: #222;
     border-radius: 14px;
-    padding: 8px 10px;
+    padding: 10px;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -93,8 +88,8 @@
     border: 1px solid #333;
   }
   
-  .card h3 { margin: 0 0 2px 0; font-size: 14px; color: #bbb; }
-  .num { font-size: 34px; font-weight: bold; margin: 0; line-height: 1; }
+  .card h3 { margin: 0 0 6px 0; font-size: 15px; color: #bbb; }
+  .num { font-size: 36px; font-weight: bold; margin: 4px 0; line-height: 1; }
   
   .btn-container {
     display: flex;
@@ -109,10 +104,11 @@
     cursor: pointer;
   }
   
-  /* FORZATURA TOTALE BOTTONI PERSONE: Alti 65px fissi */
+  /* FORZATURA REALE TASTI PERSONE (65px minimi garantiti) */
   .card button {
     font-size: 22px !important;   
     height: 65px !important;      
+    min-height: 65px !important;
     border-radius: 12px;
   }
   
@@ -120,12 +116,12 @@
   .plus-sosta { background: #3498db; color: white; flex: 2; }
   .minus { background: #e74c3c; color: white; flex: 1; }
 
-  /* SEZIONE VERIFICA TARGA CON AUTOCOPIA */
+  /* SEZIONE VERIFICA TARGA (STILE MODERNO) */
   .search-block {
     background: #1e1e1e;
-    padding: 10px;
-    border-radius: 12px;
-    margin-bottom: 10px;
+    padding: 12px;
+    border-radius: 14px;
+    margin-bottom: 12px;
     display: flex;
     gap: 10px;
     align-items: center;
@@ -136,8 +132,8 @@
     background: #000;
     border: 1px solid #555;
     color: #fff;
-    padding: 12px;
-    font-size: 18px;
+    padding: 14px 10px;
+    font-size: 20px;
     border-radius: 8px;
     text-transform: uppercase;
     text-align: center;
@@ -147,27 +143,26 @@
     flex: 1;
     background: #9b59b6; 
     color: white;
-    padding: 12px;
-    font-size: 16px;
+    font-size: 18px;
     border-radius: 8px;
-    height: 48px;
+    height: 52px;
     font-weight: bold;
   }
 
   .footer {
-    margin-top: 2px;
+    margin-top: 4px;
   }
-  .summary { font-size: 14px; background: #000; padding: 10px; border-radius: 10px; word-wrap: break-word; margin-bottom: 8px; min-height: 20px; text-align: left; white-space: pre-line; }
-  .action-btns { display: flex; gap: 8px; }
-  .copy { background: #2980b9; color: white; flex: 1; font-size: 18px; padding: 14px; border-radius: 10px; }
-  .reset { background: #f39c12; color: white; flex: 1; font-size: 18px; padding: 14px; border-radius: 10px; }
+  .summary { font-size: 15px; background: #000; padding: 12px; border-radius: 10px; word-wrap: break-word; margin-bottom: 10px; min-height: 24px; text-align: left; white-space: pre-line; border: 1px solid #222; }
+  .action-btns { display: flex; gap: 10px; }
+  .copy { background: #2980b9; color: white; flex: 1; font-size: 18px; padding: 16px; border-radius: 12px; }
+  .reset { background: #f39c12; color: white; flex: 1; font-size: 18px; padding: 16px; border-radius: 12px; }
 </style>
 </head>
 <body>
 
 <h2>Posto di Controllo</h2>
 
-<!-- BLOCCO UNICO TARGHE GIGANTE E PROTETTO -->
+<!-- BLOCCO TARGHE TOTALMENTE PROTETTO -->
 <div class="top-tg-block">
   <div class="tg-side-btns">
     <button class="plus-sosta btn-tg-v" onclick="cambia('tgSosta',1)">+1 S</button>
@@ -183,9 +178,8 @@
   </div>
 </div>
 
-<!-- STRUTTURA PERSONE CON TASTI GRANDI -->
+<!-- GRIGLIA PERSONE GIGANTE -->
 <div class="flex-grid">
-  <!-- FILA 1 -->
   <div class="flex-row">
     <div class="card">
       <h3>Ita Neg</h3>
@@ -205,7 +199,6 @@
     </div>
   </div>
   
-  <!-- FILA 2 -->
   <div class="flex-row">
     <div class="card">
       <h3>Stra Pos</h3>
@@ -226,7 +219,7 @@
   </div>
 </div>
 
-<!-- SEZIONE VERIFICA TARGA INTELLIGENTE -->
+<!-- SEZIONE VERIFICA TARGA (NUOVO PONTE CONSAP) -->
 <div class="search-block">
   <input type="url" id="targaInput" class="search-input" placeholder="DIGITA TARGA..." autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false">
   <button class="search-btn" onclick="verificaTargaSafe()">Controlla</button>
@@ -289,14 +282,16 @@ function verificaTargaSafe() {
   }
   
   if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(targa).then(() => aprirePortale(targa)).catch(() => fallbackCopiaTarga(targa));
+    navigator.clipboard.writeText(targa).then(() => aprirePortale()).catch(() => fallbackCopiaTarga(targa));
   } else {
     fallbackCopiaTarga(targa);
   }
 }
 
-function aprirePortale(targa) {
-  let url = "https://www.ilportaledellautomobilista.it/web/portale-automobilista/verifica-ultima-revisione";
+function aprirePortale() {
+  // NUOVO LINK: Pagina pubblica di controllo della copertura assicurativa CONSAP tramite "SeiSicuro"
+  // È una pagina leggera, stabile e priva di blocchi per reindirizzamenti esterni
+  let url = "https://www.seisicuro.it/auto/verifica-assicurazione-targa";
   window.open(url, '_blank');
 }
 
@@ -304,7 +299,7 @@ function fallbackCopiaTarga(text) {
   const ta = document.createElement("textarea"); ta.value = text; ta.style.position = "fixed"; document.body.appendChild(ta); ta.focus(); ta.select();
   try { document.execCommand('copy'); } catch (err) {}
   document.body.removeChild(ta);
-  aprirePortale(text);
+  aprirePortale();
 }
 
 function testo() {
