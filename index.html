@@ -25,7 +25,7 @@
     color: #94a3b8;
   }
   
-  /* Blocco Unico Targhe in alto - Stile v2 */
+  /* Blocco Unico Targhe in alto */
   .top-tg-block {
     background: #1e293b;
     border-radius: 14px;
@@ -72,7 +72,7 @@
     font-weight: bold;
   }
 
-  /* GRIGLIA COMPATTA OPERATIVA (v2 Style) */
+  /* GRIGLIA COMPATTA OPERATIVA */
   .flex-grid {
     display: flex;
     flex-direction: column;
@@ -89,7 +89,7 @@
   .card {
     background: #1e293b;
     border-radius: 12px;
-    padding: 4px 8px;
+    padding: 6px 8px;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -98,14 +98,24 @@
     border: 1px solid #334155;
   }
   
+  /* Scritte dei contatori più grandi */
   .card h3 { 
-    margin: 0; 
-    font-size: 13px; 
+    margin: 2px 0 0 0; 
+    font-size: 16px; 
     color: #94a3b8; 
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: 700;
+    letter-spacing: 0.5px;
   }
-  .num { font-size: 30px; font-weight: 800; margin: 2px 0; line-height: 1; color: #fff; }
+  
+  /* Numeri dei contatori più grandi per ridurre lo spazio morto */
+  .num { 
+    font-size: 46px; 
+    font-weight: 800; 
+    margin: 4px 0; 
+    line-height: 1; 
+    color: #fff; 
+  }
   
   .btn-container {
     display: flex;
@@ -159,7 +169,7 @@
 
 <h2>Posto di Controllo v1</h2>
 
-<!-- BLOCCO TARGHE STILE V2 -->
+<!-- BLOCCO TARGHE -->
 <div class="top-tg-block">
   <div class="tg-side-btns">
     <button class="plus-sosta btn-tg-v" onclick="cambia('tgSosta',1)">+1 S</button>
@@ -175,8 +185,9 @@
   </div>
 </div>
 
-<!-- GRIGLIA PERSONE (STRUTTURA V1) -->
+<!-- GRIGLIA PERSONE CON NEGATIVI ALLINEATI A SINISTRA -->
 <div class="flex-grid">
+  <!-- RIGA 1: ITALIANI -->
   <div class="flex-row">
     <div class="card">
       <h3>Ita Neg</h3>
@@ -196,21 +207,22 @@
     </div>
   </div>
   
+  <!-- RIGA 2: STRANIERI (INVERTITI PER COERENZA SINISTRA=NEG / DESTRA=POS) -->
   <div class="flex-row">
-    <div class="card">
-      <h3>Stra Pos</h3>
-      <div class="num" id="val-straPos">0</div>
-      <div class="btn-container">
-        <button class="minus" onclick="cambia('straPos',-1)">-1</button>
-        <button class="plus" onclick="cambia('straPos',1)">+1</button>
-      </div>
-    </div>
     <div class="card">
       <h3>Stra Neg</h3>
       <div class="num" id="val-straNeg">0</div>
       <div class="btn-container">
         <button class="minus" onclick="cambia('straNeg',-1)">-1</button>
         <button class="plus" onclick="cambia('straNeg',1)">+1</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Stra Pos</h3>
+      <div class="num" id="val-straPos">0</div>
+      <div class="btn-container">
+        <button class="minus" onclick="cambia('straPos',-1)">-1</button>
+        <button class="plus" onclick="cambia('straPos',1)">+1</button>
       </div>
     </div>
   </div>
@@ -254,6 +266,7 @@ function riproduciSuono() {
   } catch (e) {}
 }
 
+// Mantiene le stesse chiavi salvate nel localStorage per non perdere i conteggi correnti
 function salva() {
   localStorage.setItem("contatore", JSON.stringify(dati));
 }
@@ -306,6 +319,7 @@ function fallbackCopia(text) {
   document.body.removeChild(ta);
 }
 
+// Conferma di ripristino localizzata e allineata alla v2
 function azzera() {
   riproduciSuono();
   if (confirm("Ripristinare tutti i contatori a zero?")) {
