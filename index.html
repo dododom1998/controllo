@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Contatore Posto di Controllo V6</title>
+<title>Contatore Posto di Controllo V7</title>
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -11,12 +11,11 @@
     text-align: center;
     padding: 12px 10px;
     margin: 0;
-    /* Rimosso il blocco rigido dell'altezza per evitare il rimpicciolimento automatico */
     box-sizing: border-box;
   }
   h2 { margin: 0 0 10px 0; font-size: 18px; }
   
-  /* Blocco Unico Targhe in alto - BLINDATO E ENORME */
+  /* Blocco Unico Targhe in alto - GIGANTE */
   .top-tg-block {
     background: #2c3e50;
     border-radius: 16px;
@@ -55,7 +54,7 @@
     color: white;
   }
 
-  /* FORZATURA REALE TASTI TARGA (65px minimi garantiti) */
+  /* FORZATURA TASTI TARGA (65px) */
   .btn-tg-v {
     height: 65px !important; 
     min-height: 65px !important;
@@ -64,7 +63,7 @@
     font-weight: bold;
   }
 
-  /* GRIGLIA PERSONE FLUIDA MA CON ALTEZZA MINIMA */
+  /* GRIGLIA PERSONE GIGANTE */
   .flex-grid {
     display: flex;
     flex-direction: column;
@@ -104,7 +103,7 @@
     cursor: pointer;
   }
   
-  /* FORZATURA REALE TASTI PERSONE (65px minimi garantiti) */
+  /* FORZATURA TASTI PERSONE (65px) */
   .card button {
     font-size: 22px !important;   
     height: 65px !important;      
@@ -116,7 +115,7 @@
   .plus-sosta { background: #3498db; color: white; flex: 2; }
   .minus { background: #e74c3c; color: white; flex: 1; }
 
-  /* SEZIONE VERIFICA TARGA (STILE MODERNO) */
+  /* SEZIONE APERTURA APP VEICOLO+ */
   .search-block {
     background: #1e1e1e;
     padding: 12px;
@@ -162,7 +161,6 @@
 
 <h2>Posto di Controllo</h2>
 
-<!-- BLOCCO TARGHE TOTALMENTE PROTETTO -->
 <div class="top-tg-block">
   <div class="tg-side-btns">
     <button class="plus-sosta btn-tg-v" onclick="cambia('tgSosta',1)">+1 S</button>
@@ -178,7 +176,6 @@
   </div>
 </div>
 
-<!-- GRIGLIA PERSONE GIGANTE -->
 <div class="flex-grid">
   <div class="flex-row">
     <div class="card">
@@ -219,10 +216,9 @@
   </div>
 </div>
 
-<!-- SEZIONE VERIFICA TARGA (NUOVO PONTE CONSAP) -->
 <div class="search-block">
   <input type="url" id="targaInput" class="search-input" placeholder="DIGITA TARGA..." autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false">
-  <button class="search-btn" onclick="verificaTargaSafe()">Controlla</button>
+  <button class="search-btn" onclick="apriVeicoloApp()">Controlla</button>
 </div>
 
 <div class="footer">
@@ -273,7 +269,8 @@ function cambia(k, v) {
   aggiornaSchermata();
 }
 
-function verificaTargaSafe() {
+// COPIA LA TARGA E APRE DIRETTAMENTE L'APP "VEICOLO" SULL'IPHONE
+function apriVeicoloApp() {
   riproduciSuono();
   let targa = document.getElementById("targaInput").value.trim().toUpperCase().replace(/\s+/g, '');
   if (!targa) {
@@ -282,24 +279,22 @@ function verificaTargaSafe() {
   }
   
   if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(targa).then(() => aprirePortale()).catch(() => fallbackCopiaTarga(targa));
+    navigator.clipboard.writeText(targa).then(() => lanciaApp()).catch(() => fallbackApp(targa));
   } else {
-    fallbackCopiaTarga(targa);
+    fallbackApp(targa);
   }
 }
 
-function aprirePortale() {
-  // NUOVO LINK: Pagina pubblica di controllo della copertura assicurativa CONSAP tramite "SeiSicuro"
-  // È una pagina leggera, stabile e priva di blocchi per reindirizzamenti esterni
-  let url = "https://www.seisicuro.it/auto/verifica-assicurazione-targa";
-  window.open(url, '_blank');
+function lanciaApp() {
+  // Comando URL Scheme nativo per invocare l'applicazione Veicolo/Veicolo+ su iOS
+  window.location.href = "veicolo://";
 }
 
-function fallbackCopiaTarga(text) {
+function fallbackApp(text) {
   const ta = document.createElement("textarea"); ta.value = text; ta.style.position = "fixed"; document.body.appendChild(ta); ta.focus(); ta.select();
   try { document.execCommand('copy'); } catch (err) {}
   document.body.removeChild(ta);
-  aprirePortale();
+  lanciaApp();
 }
 
 function testo() {
