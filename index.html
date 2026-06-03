@@ -17,98 +17,105 @@
     justify-content: space-between;
     box-sizing: border-box;
   }
-  h2 { margin: 2px 0 8px 0; font-size: 18px; }
+  h2 { margin: 2px 0 6px 0; font-size: 16px; }
   
-  /* Blocco Unico Targhe in alto - PIÙ GRANDE */
+  /* Blocco Unico Targhe in alto - ANCORA PIÙ GRANDE */
   .top-tg-block {
     background: #2c3e50;
-    border-radius: 14px;
-    padding: 18px 12px; /* Aumentato il padding verticale */
+    border-radius: 16px;
+    padding: 26px 14px; /* Spazio verticale notevolmente aumentato */
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     box-sizing: border-box;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3); /* Un leggero effetto ombra per staccarlo */
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    border: 1px solid #34495e;
   }
   .tg-side-btns {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    width: 26%;
+    gap: 10px; /* Più spazio tra +1 e -1 */
+    width: 28%;
   }
   .tg-center-display {
-    width: 44%;
+    width: 40%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 8px; /* Più spazio tra sosta e occupanti */
+    gap: 12px; /* Molto più spazio tra le due scritte */
   }
   .tg-label-num {
-    font-size: 15px; /* Font leggermente più grande */
-    color: #cbd5e1;
+    font-size: 16px; /* Etichetta più visibile */
+    color: #e2e8f0;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 6px;
+    padding: 0 4px;
   }
   .tg-label-num span {
-    font-size: 32px; /* Numeri delle targhe più grandi e visibili */
+    font-size: 38px; /* Numeri delle targhe giganti */
     font-weight: bold;
     color: white;
   }
 
-  /* Griglia per le persone sottostante - PIÙ COMPATTA */
+  /* Bottoni verticali per le targhe - EXTRA LARGE */
+  .btn-tg-v {
+    padding: 14px 6px; /* Bottoni molto più alti e facili da premere */
+    font-size: 22px;   /* Scritte dei tasti molto più grandi (+1 S, -1 O, ecc.) */
+    border-radius: 12px;
+  }
+
+  /* Griglia per le persone sottostante - OTTIMIZZATA E COMPATTA */
   .grid-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px; /* Distanza tra i riquadri leggermente ridotta */
+    gap: 8px;
     flex-grow: 1;
   }
   
   .card {
     background: #222;
     border-radius: 12px;
-    padding: 8px 10px; /* Ridotto il padding interno */
+    padding: 6px 10px; /* Molto compatto per recuperare spazio */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     box-sizing: border-box;
   }
   
-  .card h3 { margin: 0; font-size: 13px; color: #aaa; } /* Scritta più discreta */
-  .num { font-size: 32px; font-weight: bold; margin: 1px 0; } /* Numero ridotto leggermente */
+  .card h3 { margin: 0; font-size: 13px; color: #999; }
+  .num { font-size: 28px; font-weight: bold; margin: 0; } /* Leggermente ridotto per compensare le targhe */
   
   .btn-container {
     display: flex;
     gap: 6px;
   }
   button {
-    font-size: 17px; /* Bottoni leggermente ridotti */
-    padding: 10px;   /* Più compatti */
     border: 0;
-    border-radius: 8px;
     font-weight: bold;
     touch-action: manipulation;
     cursor: pointer;
   }
+  
+  /* Bottoni delle persone leggermente più bassi */
+  .card button {
+    font-size: 16px;
+    padding: 8px;
+    border-radius: 6px;
+  }
+  
   .plus { background: #2ecc71; color: white; flex: 2; }
   .plus-sosta { background: #3498db; color: white; flex: 2; }
   .minus { background: #e74c3c; color: white; flex: 1; }
-  
-  /* Bottoni verticali per le targhe - mantengono ottima cliccabilità */
-  .btn-tg-v {
-    padding: 10px 6px;
-    font-size: 15px;
-  }
 
   .footer {
     margin-top: 8px;
   }
-  .summary { font-size: 14px; background: #000; padding: 10px; border-radius: 10px; word-wrap: break-word; margin-bottom: 6px; min-height: 20px; text-align: left; white-space: pre-line; }
+  .summary { font-size: 14px; background: #000; padding: 8px; border-radius: 10px; word-wrap: break-word; margin-bottom: 6px; min-height: 20px; text-align: left; white-space: pre-line; }
   .action-btns { display: flex; gap: 8px; }
-  .copy { background: #2980b9; color: white; flex: 1; font-size: 16px; padding: 12px; }
-  .reset { background: #f39c12; color: white; flex: 1; font-size: 16px; padding: 12px; }
+  .copy { background: #2980b9; color: white; flex: 1; font-size: 16px; padding: 12px; border-radius: 8px; }
+  .reset { background: #f39c12; color: white; flex: 1; font-size: 16px; padding: 12px; border-radius: 8px; }
 </style>
 </head>
 <body>
@@ -288,3 +295,4 @@ aggiornaSchermata();
 
 </body>
 </html>
+
