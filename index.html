@@ -2,24 +2,24 @@
 <html lang="it">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Contatore Posto di Controllo V7</title>
+<title>Contatore Posto di Controllo V8</title>
 <style>
   body {
     font-family: Arial, sans-serif;
     background: #111;
     color: white;
     text-align: center;
-    padding: 12px 10px;
+    padding: 10px;
     margin: 0;
     box-sizing: border-box;
   }
   h2 { margin: 0 0 10px 0; font-size: 18px; }
   
-  /* Blocco Unico Targhe in alto - GIGANTE */
+  /* Blocco Unico Targhe in alto - SUPER FORZATO */
   .top-tg-block {
     background: #2c3e50;
     border-radius: 16px;
-    padding: 16px 12px;
+    padding: 14px 12px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -54,13 +54,15 @@
     color: white;
   }
 
-  /* FORZATURA TASTI TARGA (65px) */
+  /* FORZATURA ABSOLUTA ALTEZZA TASTI TARGA */
   .btn-tg-v {
     height: 65px !important; 
     min-height: 65px !important;
     font-size: 22px !important;
-    border-radius: 12px;
+    border-radius: 12px !important;
     font-weight: bold;
+    display: block !important;
+    width: 100%;
   }
 
   /* GRIGLIA PERSONE GIGANTE */
@@ -103,7 +105,7 @@
     cursor: pointer;
   }
   
-  /* FORZATURA TASTI PERSONE (65px) */
+  /* FORZATURA TASTI PERSONE */
   .card button {
     font-size: 22px !important;   
     height: 65px !important;      
@@ -115,7 +117,7 @@
   .plus-sosta { background: #3498db; color: white; flex: 2; }
   .minus { background: #e74c3c; color: white; flex: 1; }
 
-  /* SEZIONE APERTURA APP VEICOLO+ */
+  /* SEZIONE TARGA UNIVERSALE */
   .search-block {
     background: #1e1e1e;
     padding: 12px;
@@ -218,7 +220,7 @@
 
 <div class="search-block">
   <input type="url" id="targaInput" class="search-input" placeholder="DIGITA TARGA..." autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false">
-  <button class="search-btn" onclick="apriVeicoloApp()">Controlla</button>
+  <button class="search-btn" onclick="processaTarga()">Controlla</button>
 </div>
 
 <div class="footer">
@@ -269,8 +271,7 @@ function cambia(k, v) {
   aggiornaSchermata();
 }
 
-// COPIA LA TARGA E APRE DIRETTAMENTE L'APP "VEICOLO" SULL'IPHONE
-function apriVeicoloApp() {
+function processaTarga() {
   riproduciSuono();
   let targa = document.getElementById("targaInput").value.trim().toUpperCase().replace(/\s+/g, '');
   if (!targa) {
@@ -279,22 +280,23 @@ function apriVeicoloApp() {
   }
   
   if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(targa).then(() => lanciaApp()).catch(() => fallbackApp(targa));
+    navigator.clipboard.writeText(targa).then(() => lanciaRicerca(targa)).catch(() => fallbackRicerca(targa));
   } else {
-    fallbackApp(targa);
+    fallbackRicerca(targa);
   }
 }
 
-function lanciaApp() {
-  // Comando URL Scheme nativo per invocare l'applicazione Veicolo/Veicolo+ su iOS
-  window.location.href = "veicolo://";
+function lanciaRicerca(targa) {
+  // Apre Google cercando direttamente la targa, un metodo rapido, leggero e immune da blocchi
+  let url = `https://www.google.com/search?q=targa+${targa}`;
+  window.open(url, '_blank');
 }
 
-function fallbackApp(text) {
+function fallbackRicerca(text) {
   const ta = document.createElement("textarea"); ta.value = text; ta.style.position = "fixed"; document.body.appendChild(ta); ta.focus(); ta.select();
   try { document.execCommand('copy'); } catch (err) {}
   document.body.removeChild(ta);
-  lanciaApp();
+  lanciaRicerca(text);
 }
 
 function testo() {
