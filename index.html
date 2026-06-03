@@ -2,14 +2,14 @@
 <html lang="it">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Contatore Posto di Controllo</title>
+<title>Contatore Posto di Controllo V4</title>
 <style>
   body {
     font-family: Arial, sans-serif;
     background: #111;
     color: white;
     text-align: center;
-    padding: 10px;
+    padding: 8px;
     margin: 0;
     height: 100vh;
     display: flex;
@@ -61,24 +61,30 @@
 
   /* Bottoni verticali per le targhe - EXTRA LARGE */
   .btn-tg-v {
-    padding: 14px 6px;
+    height: 65px; /* Forza l'altezza massiccia */
     font-size: 22px;
     border-radius: 12px;
   }
 
-  /* Griglia per le persone sottostante - TASTI GRANDI COME LE TARGHE */
-  .grid-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+  /* NUOVA GRIGLIA PERSONE - TOTALMENTE FORZATA AD ESSERE ENORME */
+  .flex-grid {
+    display: flex;
+    flex-direction: column;
     gap: 10px;
     flex-grow: 1;
     margin-bottom: 10px;
+  }
+  .flex-row {
+    display: flex;
+    gap: 10px;
+    flex: 1;
   }
   
   .card {
     background: #222;
     border-radius: 14px;
-    padding: 10px;
+    padding: 8px 10px;
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -86,13 +92,15 @@
     border: 1px solid #333;
   }
   
-  .card h3 { margin: 0 0 4px 0; font-size: 14px; color: #bbb; }
-  .num { font-size: 34px; font-weight: bold; margin: 2px 0; }
+  .card h3 { margin: 0 0 2px 0; font-size: 14px; color: #bbb; }
+  .num { font-size: 34px; font-weight: bold; margin: 0; line-height: 1; }
   
   .btn-container {
     display: flex;
     gap: 10px;
+    width: 100%;
   }
+  
   button {
     border: 0;
     font-weight: bold;
@@ -100,10 +108,10 @@
     cursor: pointer;
   }
   
-  /* Bottoni delle persone uniformati a quelli delle targhe */
+  /* FORZATURA BOTTONI PERSONE: Alti come quelli delle targhe */
   .card button {
-    font-size: 22px;   /* Stessa dimensione enorme */
-    padding: 14px 6px; /* Stessa altezza massiccia */
+    font-size: 22px;   
+    height: 65px;      /* Forza l'altezza a 65 pixel su qualsiasi browser */
     border-radius: 12px;
   }
   
@@ -111,7 +119,7 @@
   .plus-sosta { background: #3498db; color: white; flex: 2; }
   .minus { background: #e74c3c; color: white; flex: 1; }
 
-  /* NUOVA SEZIONE: CONTROLLO TARGA RAPIDO */
+  /* SEZIONE VERIFICA TARGA "CONSAP/PORTALE" */
   .search-block {
     background: #1e1e1e;
     padding: 10px;
@@ -136,11 +144,13 @@
   }
   .search-btn {
     flex: 1;
-    background: #9b59b6; /* Colore viola per distinguerlo */
+    background: #9b59b6; 
     color: white;
     padding: 12px;
     font-size: 16px;
     border-radius: 8px;
+    height: 48px;
+    font-weight: bold;
   }
 
   .footer {
@@ -161,56 +171,54 @@
     <button class="plus-sosta btn-tg-v" onclick="cambia('tgSosta',1)">+1 S</button>
     <button class="minus btn-tg-v" onclick="cambia('tgSosta',-1)">-1 S</button>
   </div>
-  
   <div class="tg-center-display">
     <div class="tg-label-num">Sosta: <span id="val-tgSosta">0</span></div>
     <div class="tg-label-num">Occupati: <span id="val-tg">0</span></div>
   </div>
-  
   <div class="tg-side-btns">
     <button class="plus btn-tg-v" onclick="cambia('tg',1)">+1 O</button>
     <button class="minus btn-tg-v" onclick="cambia('tg',-1)">-1 O</button>
   </div>
 </div>
 
-<div class="grid-container">
+<div class="flex-grid">
+  <div class="flex-row">
+    <div class="card">
+      <h3>Ita Neg</h3>
+      <div class="num" id="val-itaNeg">0</div>
+      <div class="btn-container">
+        <button class="minus" onclick="cambia('itaNeg',-1)">-1</button>
+        <button class="plus" onclick="cambia('itaNeg',1)">+1</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Ita Pos</h3>
+      <div class="num" id="val-itaPos">0</div>
+      <div class="btn-container">
+        <button class="minus" onclick="cambia('itaPos',-1)">-1</button>
+        <button class="plus" onclick="cambia('itaPos',1)">+1</button>
+      </div>
+    </div>
+  </div>
   
-  <div class="card">
-    <h3>Ita Neg</h3>
-    <div class="num" id="val-itaNeg">0</div>
-    <div class="btn-container">
-      <button class="minus" onclick="cambia('itaNeg',-1)">-1</button>
-      <button class="plus" onclick="cambia('itaNeg',1)">+1</button>
+  <div class="flex-row">
+    <div class="card">
+      <h3>Stra Pos</h3>
+      <div class="num" id="val-straPos">0</div>
+      <div class="btn-container">
+        <button class="minus" onclick="cambia('straPos',-1)">-1</button>
+        <button class="plus" onclick="cambia('straPos',1)">+1</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Stra Neg</h3>
+      <div class="num" id="val-straNeg">0</div>
+      <div class="btn-container">
+        <button class="minus" onclick="cambia('straNeg',-1)">-1</button>
+        <button class="plus" onclick="cambia('straNeg',1)">+1</button>
+      </div>
     </div>
   </div>
-
-  <div class="card">
-    <h3>Ita Pos</h3>
-    <div class="num" id="val-itaPos">0</div>
-    <div class="btn-container">
-      <button class="minus" onclick="cambia('itaPos',-1)">-1</button>
-      <button class="plus" onclick="cambia('itaPos',1)">+1</button>
-    </div>
-  </div>
-
-  <div class="card">
-    <h3>Stra Pos</h3>
-    <div class="num" id="val-straPos">0</div>
-    <div class="btn-container">
-      <button class="minus" onclick="cambia('straPos',-1)">-1</button>
-      <button class="plus" onclick="cambia('straPos',1)">+1</button>
-    </div>
-  </div>
-
-  <div class="card">
-    <h3>Stra Neg</h3>
-    <div class="num" id="val-straNeg">0</div>
-    <div class="btn-container">
-      <button class="minus" onclick="cambia('straNeg',-1)">-1</button>
-      <button class="plus" onclick="cambia('straNeg',1)">+1</button>
-    </div>
-  </div>
-
 </div>
 
 <div class="search-block">
@@ -244,16 +252,12 @@ function riproduciSuono() {
     const ctx = new AudioContext();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
-    
     osc.type = 'sine';
     osc.frequency.setValueAtTime(600, ctx.currentTime);
-    
     gain.gain.setValueAtTime(0.2, ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.03);
-    
     osc.connect(gain);
     gain.connect(ctx.destination);
-    
     osc.start();
     osc.stop(ctx.currentTime + 0.03);
   } catch (e) {}
@@ -270,26 +274,21 @@ function cambia(k, v) {
   aggiornaSchermata();
 }
 
-// Funzione di reindirizzamento per il controllo targa esterna
 function verificaTargaExternal() {
   riproduciSuono();
   let targa = document.getElementById("targaInput").value.trim().toUpperCase().replace(/\s+/g, '');
   if (!targa) {
-    alert("Inserisci una targa valida prima!");
+    alert("Inserisci una targa valida!");
     return;
   }
-  // Utilizza il portale di ricerca rapida di Infotarga/Consap
-  let url = `https://www.infotarga.it/check.php?targa=${targa}`;
+  // Interrogazione diretta sul database pubblico di verifica revisioni del Portale dell'Automobilista
+  let url = `https://www.ilportaledellautomobilista.it/web/portale-automobilista/v verifica-classe-ambientale-veicolo?p_p_id=vveicoloportlet_WAR_vveicoloportlet&_vveicoloportlet_WAR_vveicoloportlet_targa=${targa}&_vveicoloportlet_WAR_vveicoloportlet_tipoVeicolo=0`;
   window.open(url, '_blank');
 }
 
 function testo() {
   let righe = [];
-  
-  if (dati.tgSosta > 0) {
-    righe.push(`${dati.tgSosta} tg`);
-  }
-  
+  if (dati.tgSosta > 0) righe.push(`${dati.tgSosta} tg`);
   let dettagliPersone = [];
   if (dati.itaNeg > 0) dettagliPersone.push(`${dati.itaNeg} ita neg`);
   if (dati.itaPos > 0) dettagliPersone.push(`${dati.itaPos} ita pos`);
@@ -298,14 +297,11 @@ function testo() {
   
   if (dati.tg > 0) {
     let rigaTgCon = `${dati.tg} tg`;
-    if (dettagliPersone.length > 0) {
-      rigaTgCon += ` con ${dettagliPersone.join(", ")}`;
-    }
+    if (dettagliPersone.length > 0) rigaTgCon += ` con ${dettagliPersone.join(", ")}`;
     righe.push(rigaTgCon);
   } else if (dettagliPersone.length > 0) {
     righe.push(dettagliPersone.join(", "));
   }
-  
   return righe.length > 0 ? righe.join("\n") : "Nessun controllo effettuato";
 }
 
@@ -322,9 +318,7 @@ function copia() {
   const t = testo();
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(t).then(() => alert("Copiato!")).catch(() => fallbackCopia(t));
-  } else {
-    fallbackCopia(t);
-  }
+  } else { fallbackCopia(t); }
 }
 
 function fallbackCopia(text) {
@@ -341,9 +335,7 @@ function azzera() {
     aggiornaSchermata();
   }
 }
-
 aggiornaSchermata();
 </script>
-
 </body>
 </html>
