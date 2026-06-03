@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Contatore Posto di Controllo V5</title>
+<title>Contatore Posto di Controllo V5.1</title>
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -19,11 +19,12 @@
   }
   h2 { margin: 2px 0 6px 0; font-size: 16px; }
   
-  /* Blocco Unico Targhe in alto - GIGANTE */
+  /* Blocco Unico Targhe in alto - ALTEZZA BLOCCATA E GIGANTE */
   .top-tg-block {
     background: #2c3e50;
     border-radius: 16px;
-    padding: 24px 14px;
+    padding: 16px 14px;
+    height: 160px; /* Altezza totale del blocco bloccata per sicurezza */
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -59,10 +60,10 @@
     color: white;
   }
 
-  /* Bottoni verticali per le targhe */
+  /* FORZATURA TOTALE BOTTONI TARGHE: Alti 65px fissi */
   .btn-tg-v {
-    height: 65px; 
-    font-size: 22px;
+    height: 65px !important; 
+    font-size: 22px !important;
     border-radius: 12px;
   }
 
@@ -108,10 +109,10 @@
     cursor: pointer;
   }
   
-  /* BOTTONI PERSONE ALTI COME LE TARGHE */
+  /* FORZATURA TOTALE BOTTONI PERSONE: Alti 65px fissi */
   .card button {
-    font-size: 22px;   
-    height: 65px;      
+    font-size: 22px !important;   
+    height: 65px !important;      
     border-radius: 12px;
   }
   
@@ -166,6 +167,7 @@
 
 <h2>Posto di Controllo</h2>
 
+<!-- BLOCCO UNICO TARGHE GIGANTE E PROTETTO -->
 <div class="top-tg-block">
   <div class="tg-side-btns">
     <button class="plus-sosta btn-tg-v" onclick="cambia('tgSosta',1)">+1 S</button>
@@ -181,7 +183,9 @@
   </div>
 </div>
 
+<!-- STRUTTURA PERSONE CON TASTI GRANDI -->
 <div class="flex-grid">
+  <!-- FILA 1 -->
   <div class="flex-row">
     <div class="card">
       <h3>Ita Neg</h3>
@@ -201,6 +205,7 @@
     </div>
   </div>
   
+  <!-- FILA 2 -->
   <div class="flex-row">
     <div class="card">
       <h3>Stra Pos</h3>
@@ -221,6 +226,7 @@
   </div>
 </div>
 
+<!-- SEZIONE VERIFICA TARGA INTELLIGENTE -->
 <div class="search-block">
   <input type="url" id="targaInput" class="search-input" placeholder="DIGITA TARGA..." autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false">
   <button class="search-btn" onclick="verificaTargaSafe()">Controlla</button>
@@ -274,7 +280,6 @@ function cambia(k, v) {
   aggiornaSchermata();
 }
 
-// Funzione sicura: Copia negli appunti e apre la pagina di ricerca ufficiale
 function verificaTargaSafe() {
   riproduciSuono();
   let targa = document.getElementById("targaInput").value.trim().toUpperCase().replace(/\s+/g, '');
@@ -283,7 +288,6 @@ function verificaTargaSafe() {
     return;
   }
   
-  // Copia la targa negli appunti in background
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(targa).then(() => aprirePortale(targa)).catch(() => fallbackCopiaTarga(targa));
   } else {
@@ -292,7 +296,6 @@ function verificaTargaSafe() {
 }
 
 function aprirePortale(targa) {
-  // Pagina di atterraggio pulita del Portale dell'Automobilista (Verifica Revisioni)
   let url = "https://www.ilportaledellautomobilista.it/web/portale-automobilista/verifica-ultima-revisione";
   window.open(url, '_blank');
 }
