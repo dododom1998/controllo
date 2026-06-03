@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Contatore Posto di Controllo V4</title>
+<title>Contatore Posto di Controllo V5</title>
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -59,7 +59,7 @@
     color: white;
   }
 
-  /* Bottoni verticali per le targhe - EXTRA LARGE */
+  /* Bottoni verticali per le targhe */
   .btn-tg-v {
     height: 65px; 
     font-size: 22px;
@@ -119,7 +119,7 @@
   .plus-sosta { background: #3498db; color: white; flex: 2; }
   .minus { background: #e74c3c; color: white; flex: 1; }
 
-  /* SEZIONE VERIFICA TARGA DIRETTA */
+  /* SEZIONE VERIFICA TARGA CON AUTOCOPIA */
   .search-block {
     background: #1e1e1e;
     padding: 10px;
@@ -223,7 +223,7 @@
 
 <div class="search-block">
   <input type="url" id="targaInput" class="search-input" placeholder="DIGITA TARGA..." autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false">
-  <button class="search-btn" onclick="verificaTargaExternal()">Controlla</button>
+  <button class="search-btn" onclick="verificaTargaSafe()">Controlla</button>
 </div>
 
 <div class="footer">
@@ -274,16 +274,34 @@ function cambia(k, v) {
   aggiornaSchermata();
 }
 
-function verificaTargaExternal() {
+// Funzione sicura: Copia negli appunti e apre la pagina di ricerca ufficiale
+function verificaTargaSafe() {
   riproduciSuono();
   let targa = document.getElementById("targaInput").value.trim().toUpperCase().replace(/\s+/g, '');
   if (!targa) {
     alert("Inserisci una targa valida!");
     return;
   }
-  // URL CORRETTO: Punta direttamente ai dati del veicolo sul Portale dell'Automobilista inserendo subito la targa passata
-  let url = `https://www.ilportaledellautomobilista.it/web/portale-automobilista/verifica-classe-ambientale-veicolo?p_p_id=vveicoloportlet_WAR_vveicoloportlet&_vveicoloportlet_WAR_vveicoloportlet_targa=${targa}&_vveicoloportlet_WAR_vveicoloportlet_tipoVeicolo=0`;
+  
+  // Copia la targa negli appunti in background
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(targa).then(() => aprirePortale(targa)).catch(() => fallbackCopiaTarga(targa));
+  } else {
+    fallbackCopiaTarga(targa);
+  }
+}
+
+function aprirePortale(targa) {
+  // Pagina di atterraggio pulita del Portale dell'Automobilista (Verifica Revisioni)
+  let url = "https://www.ilportaledellautomobilista.it/web/portale-automobilista/verifica-ultima-revisione";
   window.open(url, '_blank');
+}
+
+function fallbackCopiaTarga(text) {
+  const ta = document.createElement("textarea"); ta.value = text; ta.style.position = "fixed"; document.body.appendChild(ta); ta.focus(); ta.select();
+  try { document.execCommand('copy'); } catch (err) {}
+  document.body.removeChild(ta);
+  aprirePortale(text);
 }
 
 function testo() {
