@@ -86,6 +86,7 @@
     flex: 1;
   }
   
+  /* Scheda Standard (Negativi / Sfondo Scuro) */
   .card {
     background: #1e293b;
     border-radius: 12px;
@@ -98,7 +99,12 @@
     border: 1px solid #334155;
   }
   
-  /* Scritte dei contatori più grandi */
+  /* Scheda Evidenziata (Positivi - Rosso Opaco Tattico) */
+  .card.pos-highlight {
+    background: #7f1d1d; /* Rosso scuro/opaco che salta all'occhio senza abbagliare */
+    border: 1px solid #991b1b;
+  }
+  
   .card h3 { 
     margin: 2px 0 0 0; 
     font-size: 16px; 
@@ -108,7 +114,11 @@
     letter-spacing: 0.5px;
   }
   
-  /* Numeri dei contatori più grandi per ridurre lo spazio morto */
+  /* Testo titolo per schede positive per migliorarne la leggibilità */
+  .card.pos-highlight h3 {
+    color: #fca5a5;
+  }
+  
   .num { 
     font-size: 46px; 
     font-weight: 800; 
@@ -185,7 +195,7 @@
   </div>
 </div>
 
-<!-- GRIGLIA PERSONE CON NEGATIVI ALLINEATI A SINISTRA -->
+<!-- GRIGLIA PERSONE CON COSTRUTTO VISIVO NEGATIVI/POSITIVI -->
 <div class="flex-grid">
   <!-- RIGA 1: ITALIANI -->
   <div class="flex-row">
@@ -197,7 +207,8 @@
         <button class="plus" onclick="cambia('itaNeg',1)">+1</button>
       </div>
     </div>
-    <div class="card">
+    <!-- Aggiunta classe pos-highlight per lo sfondo rosso opaco -->
+    <div class="card pos-highlight">
       <h3>Ita Pos</h3>
       <div class="num" id="val-itaPos">0</div>
       <div class="btn-container">
@@ -207,7 +218,7 @@
     </div>
   </div>
   
-  <!-- RIGA 2: STRANIERI (INVERTITI PER COERENZA SINISTRA=NEG / DESTRA=POS) -->
+  <!-- RIGA 2: STRANIERI -->
   <div class="flex-row">
     <div class="card">
       <h3>Stra Neg</h3>
@@ -217,7 +228,8 @@
         <button class="plus" onclick="cambia('straNeg',1)">+1</button>
       </div>
     </div>
-    <div class="card">
+    <!-- Aggiunta classe pos-highlight per lo sfondo rosso opaco -->
+    <div class="card pos-highlight">
       <h3>Stra Pos</h3>
       <div class="num" id="val-straPos">0</div>
       <div class="btn-container">
@@ -266,7 +278,6 @@ function riproduciSuono() {
   } catch (e) {}
 }
 
-// Mantiene le stesse chiavi salvate nel localStorage per non perdere i conteggi correnti
 function salva() {
   localStorage.setItem("contatore", JSON.stringify(dati));
 }
@@ -319,7 +330,6 @@ function fallbackCopia(text) {
   document.body.removeChild(ta);
 }
 
-// Conferma di ripristino localizzata e allineata alla v2
 function azzera() {
   riproduciSuono();
   if (confirm("Ripristinare tutti i contatori a zero?")) {
