@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Contatore Posto di Controllo - v1 Tattica</title>
+<title>Contatore Posto di Controllo - v1 Evolution</title>
 <style>
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -16,6 +16,9 @@
     flex-direction: column;
     justify-content: space-between;
     box-sizing: border-box;
+    /* Blocca la selezione del testo e i trascinamenti accidentali */
+    -webkit-user-select: none;
+    user-select: none;
   }
   h2 { 
     margin: 2px 0 6px 0; 
@@ -137,7 +140,12 @@
     font-weight: bold;
     touch-action: manipulation;
     cursor: pointer;
-    transition: background 0.1s ease;
+    transition: transform 0.05s ease, background 0.1s ease;
+  }
+  
+  /* Effetto pressione rapida stile app */
+  button:active {
+    transform: scale(0.96);
   }
   
   .card button {
@@ -360,14 +368,20 @@ let dati = {
   itaPos: Number(datiSalvati.itaPos) || 0,
   straPos: Number(datiSalvati.straPos) || 0,
   straNeg: Number(datiSalvati.straNeg) || 0,
-  // Nuove chiavi per memorizzare i pedoni
   apItaNeg: Number(datiSalvati.apItaNeg) || 0,
   apItaPos: Number(datiSalvati.apItaPos) || 0,
   apStraPos: Number(datiSalvati.apStraPos) || 0,
   apStraNeg: Number(datiSalvati.apStraNeg) || 0
 };
 
-function riproduciSuono() {
+// Funzione unica per gestire Suono + Micro-Vibrazione Tattica
+function feedbackTattico() {
+  // 1. Attiva la micro-vibrazione (15 millisecondi, un "colpetto" secco)
+  if (navigator.vibrate) {
+    navigator.vibrate(15);
+  }
+  
+  // 2. Riproduce il bip sonoro
   try {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     if (!AudioContext) return;
@@ -390,26 +404,25 @@ function salva() {
 }
 
 function cambia(k, v) {
-  riproduciSuono();
+  feedbackTattico(); // Sostituito riproduciSuono con il nuovo feedback completo
   dati[k] = Math.max(0, dati[k] + v);
   salva(); 
   aggiornaSchermata();
 }
 
 function apriModal() {
-  riproduciSuono();
+  feedbackTattico();
   document.getElementById("modalAppiedati").style.display = "flex";
 }
 
 function chiudiModal() {
-  riproduciSuono();
+  feedbackTattico();
   document.getElementById("modalAppiedati").style.display = "none";
 }
 
 function testo() {
   let righe = [];
   
-  // 1. GESTIONE APPIEDATI (Sempre in cima se presenti)
   let dettagliPedoni = [];
   if (dati.apItaNeg > 0) dettagliPedoni.push(`${dati.apItaNeg} ita neg`);
   if (dati.apItaPos > 0) dettagliPedoni.push(`${dati.apItaPos} ita pos`);
@@ -420,7 +433,6 @@ function testo() {
     righe.push(`Appiedati: ${dettagliPedoni.join(", ")}`);
   }
 
-  // 2. GESTIONE CONTROLLI STANDARD (VEICOLI)
   if (dati.tgSosta > 0) righe.push(`${dati.tgSosta} tg`);
   
   let dettagliPersone = [];
@@ -449,7 +461,7 @@ function aggiornaSchermata() {
 }
 
 function copia() {
-  riproduciSuono();
+  feedbackTattico();
   const t = testo();
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(t).then(() => alert("Copiato negli appunti!")).catch(() => fallbackCopia(t));
@@ -463,7 +475,7 @@ function fallbackCopia(text) {
 }
 
 function azzera() {
-  riproduciSuono();
+  feedbackTattico();
   if (confirm("Ripristinare tutti i contatori a zero?")) {
     for (let k in dati) dati[k] = 0;
     salva(); 
