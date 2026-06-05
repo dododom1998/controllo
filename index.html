@@ -101,7 +101,7 @@
   
   /* Scheda Evidenziata (Positivi - Rosso Opaco Tattico) */
   .card.pos-highlight {
-    background: #7f1d1d; /* Rosso scuro/opaco che salta all'occhio senza abbagliare */
+    background: #7f1d1d; 
     border: 1px solid #991b1b;
   }
   
@@ -114,7 +114,6 @@
     letter-spacing: 0.5px;
   }
   
-  /* Testo titolo per schede positive per migliorarne la leggibilità */
   .card.pos-highlight h3 {
     color: #fca5a5;
   }
@@ -195,19 +194,10 @@
   </div>
 </div>
 
-<!-- GRIGLIA PERSONE CON COSTRUTTO VISIVO NEGATIVI/POSITIVI -->
+<!-- GRIGLIA PERSONE CON POSITIVI A SINISTRA E NEGATIVI A DESTRA -->
 <div class="flex-grid">
-  <!-- RIGA 1: ITALIANI -->
+  <!-- RIGA 1: ITALIANI (INVERTITI) -->
   <div class="flex-row">
-    <div class="card">
-      <h3>Ita Neg</h3>
-      <div class="num" id="val-itaNeg">0</div>
-      <div class="btn-container">
-        <button class="minus" onclick="cambia('itaNeg',-1)">-1</button>
-        <button class="plus" onclick="cambia('itaNeg',1)">+1</button>
-      </div>
-    </div>
-    <!-- Aggiunta classe pos-highlight per lo sfondo rosso opaco -->
     <div class="card pos-highlight">
       <h3>Ita Pos</h3>
       <div class="num" id="val-itaPos">0</div>
@@ -216,25 +206,32 @@
         <button class="plus" onclick="cambia('itaPos',1)">+1</button>
       </div>
     </div>
-  </div>
-  
-  <!-- RIGA 2: STRANIERI -->
-  <div class="flex-row">
     <div class="card">
-      <h3>Stra Neg</h3>
-      <div class="num" id="val-straNeg">0</div>
+      <h3>Ita Neg</h3>
+      <div class="num" id="val-itaNeg">0</div>
       <div class="btn-container">
-        <button class="minus" onclick="cambia('straNeg',-1)">-1</button>
-        <button class="plus" onclick="cambia('straNeg',1)">+1</button>
+        <button class="minus" onclick="cambia('itaNeg',-1)">-1</button>
+        <button class="plus" onclick="cambia('itaNeg',1)">+1</button>
       </div>
     </div>
-    <!-- Aggiunta classe pos-highlight per lo sfondo rosso opaco -->
+  </div>
+  
+  <!-- RIGA 2: STRANIERI (INVERTITI) -->
+  <div class="flex-row">
     <div class="card pos-highlight">
       <h3>Stra Pos</h3>
       <div class="num" id="val-straPos">0</div>
       <div class="btn-container">
         <button class="minus" onclick="cambia('straPos',-1)">-1</button>
         <button class="plus" onclick="cambia('straPos',1)">+1</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Stra Neg</h3>
+      <div class="num" id="val-straNeg">0</div>
+      <div class="btn-container">
+        <button class="minus" onclick="cambia('straNeg',-1)">-1</button>
+        <button class="plus" onclick="cambia('straNeg',1)">+1</button>
       </div>
     </div>
   </div>
