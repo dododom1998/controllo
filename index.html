@@ -250,7 +250,7 @@
   }
   
   .summary { 
-    font-size: 12px; 
+    font-size: 11px; 
     background: #050505; 
     padding: 6px 10px; 
     border-radius: 8px; 
@@ -480,7 +480,7 @@
           <div class="num" id="val-apItaNeg">0</div>
           <div class="btn-container">
             <button class="minus" onclick="cambia('apItaNeg',-1)">-1</button>
-            <button class="plus" onclick="cambia('apItaNeg',1)">+1</button>
+            <button class="plus" onclick="cambia('apItaPos',1)">+1</button>
           </div>
         </div>
       </div>
@@ -580,12 +580,12 @@ function annulla() {
 function apriModal(id) { feedbackTattico(); document.getElementById(id).style.display = "flex"; }
 function chiudiModal(id) { feedbackTattico(); document.getElementById(id).style.display = "none"; }
 
-// Genera il report rispettando l'ordine logico richiesto
+// Genera il report con le righe vuote di distanziamento richieste
 function generaReport(usaGrassetto = false) {
-  let righe = [];
+  let blocchi = [];
   const b = usaGrassetto ? "*" : "";
   
-  // RIGA 1: POSTO DI CONTROLLO (In cima, con intestazione fissa in GRASSETTO)
+  // 1. BLOCCO POSTO DI CONTROLLO
   let righePdc = [];
   if (dati.pdcTgSosta > 0) righePdc.push(`${b}${dati.pdcTgSosta}${b} tg`);
   
@@ -603,20 +603,20 @@ function generaReport(usaGrassetto = false) {
     righePdc.push(detPdcPersone.join(", "));
   }
   if (righePdc.length > 0) {
-    righe.push(`${b}POSTO DI CONTROLLO:${b} ${righePdc.join(", ")}`);
+    blocchi.push(`${b}POSTO DI CONTROLLO:${b} ${righePdc.join(", ")}`);
   }
 
-  // RIGA 2: APPIEDATI (Subito sotto al PDC, senza scritte fisse davanti)
+  // 2. BLOCCO APPIEDATI (Subito sotto, senza scritte fisse)
   let detAp = []; 
   if (dati.apItaNeg > 0) detAp.push(`${b}${dati.apItaNeg}${b} ita neg`);
   if (dati.apItaPos > 0) detAp.push(`${b}${dati.apItaPos}${b} ita pos`);
   if (dati.apStraPos > 0) detAp.push(`${b}${dati.apStraPos}${b} stra pos`);
   if (dati.apStraNeg > 0) detAp.push(`${b}${dati.apStraNeg}${b} stra neg`);
   if (detAp.length > 0) {
-    righe.push(detAp.join(", "));
+    blocchi.push(detAp.join(", "));
   }
   
-  // RIGA 3: TRANSITO/SOSTA (In fondo, senza scritte fisse davanti)
+  // 3. BLOCCO TRANSITO/SOSTA (In fondo, senza scritte fisse)
   let righeTransitoSosta = [];
   if (dati.tgSosta > 0) righeTransitoSosta.push(`${b}${dati.tgSosta}${b} tg`);
   
@@ -635,10 +635,11 @@ function generaReport(usaGrassetto = false) {
   }
 
   if (righeTransitoSosta.length > 0) {
-    righe.push(righeTransitoSosta.join(", "));
+    blocchi.push(righeTransitoSosta.join(", "));
   }
 
-  return righe.length > 0 ? righe.join("\n") : "Nessun controllo effettuato";
+  // Unisce le macro-sezioni inserendo una riga vuota (\n\n) per distanziarle
+  return blocchi.length > 0 ? blocchi.join("\n\n") : "Nessun controllo effettuato";
 }
 
 function aggiornaSchermata() {
@@ -658,7 +659,6 @@ function inviaWhatsApp() {
   window.location.href = "whatsapp://send?text=" + encodeURIComponent(t);
 }
 
-// Copia il testo formattato
 function copiaTesto() {
   feedbackTattico();
   const t = generaReport(true); 
