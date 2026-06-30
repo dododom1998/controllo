@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Contatore Posto di Controllo - V1 Pro Smart</title>
+<title>Contatore Posto di Controllo - V1 Ultra</title>
 <style>
   /* BASE DI PARTENZA NATIVA: TOTAL BLACK */
   :root {
@@ -31,7 +31,7 @@
   html {
     background-color: #000000; 
     height: -webkit-fill-available;
-    overflow: hidden; /* Blocca rimbalzi Safari */
+    overflow: hidden;
   }
 
   body {
@@ -53,7 +53,7 @@
     overflow: hidden;
   }
 
-  /* HEADER COMPATTATO */
+  /* HEADER */
   .header-area {
     display: flex;
     justify-content: space-between;
@@ -136,7 +136,7 @@
     text-transform: uppercase;
   }
 
-  /* GRIGLIA CENTRALE CONTATORI */
+  /* GRIGLIA CONTATORI */
   .flex-grid {
     display: flex;
     flex-direction: column;
@@ -150,7 +150,6 @@
     flex: 1;
   }
   
-  /* CARD */
   .card {
     background: var(--bg-card);
     border-radius: 12px;
@@ -186,7 +185,6 @@
   body.red-mode .num { color: #fca5a5; }
   body.red-mode .card.pos-highlight .num { color: #ef4444; }
   
-  /* DISTRIBUZIONE TASTI */
   .btn-container {
     display: flex;
     gap: 4px;
@@ -198,7 +196,7 @@
     font-weight: bold;
     touch-action: manipulation;
     cursor: pointer;
-    transition: transform 0.05s ease;
+    transition: transform 0.05s ease, background-color 0.2s ease;
   }
   button:active {
     transform: scale(0.95);
@@ -219,7 +217,7 @@
   body.red-mode .plus-sosta { background: #1e3a8a; color: #bfdbfe; }
   body.red-mode .minus { background: #7f1d1d; color: #fca5a5; }
 
-  /* TASTI CENTRALI DI APERTURA PANNELLI */
+  /* TASTI MODAL */
   .btn-trigger-panel {
     color: white;
     width: 100%;
@@ -242,7 +240,7 @@
   body.red-mode .btn-pdc { background: #581c87; border-color: #6b21a8; color: #e9d5ff; }
   body.red-mode .btn-appiedati { background: #1e3a8a; border-color: #1e40af; color: #bfdbfe; }
 
-  /* FOOTER */
+  /* FOOTER INTERFACCIA */
   .footer {
     display: flex;
     flex-direction: column;
@@ -260,7 +258,6 @@
     border: 1px solid #111111;
     color: #0ea5e9; 
     font-family: monospace;
-    height: auto; 
     min-height: 34px; 
     box-sizing: border-box;
     display: flex;
@@ -278,17 +275,18 @@
     height: 48px; 
     min-height: 48px;
   }
-  .whatsapp { background: #16a34a; color: white; flex: 1.1; font-size: 14px; border-radius: 8px; height: 100%; }
-  .copy-btn { background: #0284c7; color: white; flex: 1.1; font-size: 14px; border-radius: 8px; height: 100%; }
   .undo { background: #4b5563; color: white; flex: 0.5; font-size: 18px; border-radius: 8px; height: 100%; }
-  .reset { background: #b45309; color: white; flex: 0.5; font-size: 18px; border-radius: 8px; height: 100%; margin-left: 6px; } /* Più distanziato */
+  .whatsapp { background: #16a34a; color: white; flex: 1.2; font-size: 14px; border-radius: 8px; height: 100%; }
+  .copy-btn { background: #0284c7; color: white; flex: 1.2; font-size: 14px; border-radius: 8px; height: 100%; }
+  .copy-success { background: #16a34a !important; color: white !important; }
+  .reset { background: #b45309; color: white; flex: 0.5; font-size: 18px; border-radius: 8px; height: 100%; margin-left: 6px; } 
 
+  body.red-mode .undo { background: #3f3f46; color: #d4d4d8; }
   body.red-mode .whatsapp { background: #064e3b; color: #a7f3d0; }
   body.red-mode .copy-btn { background: #0369a1; color: #bae6fd; }
-  body.red-mode .undo { background: #3f3f46; color: #d4d4d8; }
   body.red-mode .reset { background: #7c2d12; color: #ffedd5; }
 
-  /* POPUP SCHERMATE APPIEDATI E POSTO DI CONTROLLO */
+  /* MODAL OVERLAYS */
   .modal-overlay {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
@@ -342,7 +340,6 @@
   }
   body.red-mode .btn-chiudi-modal { background: #991b1b; color: #fca5a5; }
 
-  /* BLOCCO VEICOLI SEMPLIFICATO PER IL PDC */
   .pdc-tg-block {
     background: var(--bg-card);
     border-radius: 12px;
@@ -365,7 +362,7 @@
   <button class="btn-mode" id="mode-icon" onclick="toggleModalita()">🔴</button>
 </div>
 
-<!-- AUTO IN TRANSITO/SOSTA: BLOCCO TARGHE STANDARD -->
+<!-- CONTAINER OPERATIVO PRINCIPALE -->
 <div class="top-tg-block">
   <div class="tg-side-btns">
     <button class="plus-sosta btn-tg-v" onclick="cambia('tgSosta',1)">+1 S</button>
@@ -381,7 +378,6 @@
   </div>
 </div>
 
-<!-- AUTO IN TRANSITO/SOSTA: GRIGLIA CENTRALE CONTATORI -->
 <div class="flex-grid">
   <div class="flex-row">
     <div class="card pos-highlight">
@@ -425,18 +421,18 @@
 <button class="btn-trigger-panel btn-pdc" onclick="apriModal('modalPdc')">🚨 Posto di Controllo</button>
 <button class="btn-trigger-panel btn-appiedati" onclick="apriModal('modalAppiedati')">🚶 Appiedati</button>
 
-<!-- FOOTER -->
+<!-- FOOTER CON PULSANTI RIORGANIZZATI -->
 <div class="footer">
   <div class="summary" id="riepilogo">Nessun controllo effettuato</div>
   <div class="action-btns">
+    <button class="undo" id="btn-undo" onclick="annulla()" style="opacity: 0.3;">↩︎</button>
     <button class="whatsapp" onclick="inviaWhatsApp()">💬 Invia</button>
     <button class="copy-btn" id="btn-copia" onclick="copiaTesto()">📋 Copia</button>
-    <button class="undo" id="btn-undo" onclick="annulla()" style="opacity: 0.3;">↩︎</button>
     <button class="reset" onclick="azzera()">🗑️</button>
   </div>
 </div>
 
-<!-- PANNELLO COMPLAIN: POSTO DI CONTROLLO -->
+<!-- MODAL: POSTO DI CONTROLLO -->
 <div class="modal-overlay" id="modalPdc">
   <div class="modal-content">
     <div class="modal-header">
@@ -492,7 +488,7 @@
   </div>
 </div>
 
-<!-- PANNELLO COMPLAIN: APPIEDATI -->
+<!-- MODAL: APPIEDATI -->
 <div class="modal-overlay" id="modalAppiedati">
   <div class="modal-content">
     <div class="modal-header">
@@ -580,10 +576,17 @@ function feedbackTattico() {
   } catch (e) {}
 }
 
+// INIZIALIZZAZIONE LOGATO STATO TATTICO MASCHERA
+if (localStorage.getItem("tatticoAttivo") === "true") {
+  document.body.classList.add("red-mode");
+  document.getElementById("mode-icon").innerText = "⚫";
+}
+
 function toggleModalita() {
   feedbackTattico();
   const isRed = document.body.classList.toggle("red-mode");
   document.getElementById("mode-icon").innerText = isRed ? "⚫" : "🔴";
+  localStorage.setItem("tatticoAttivo", isRed);
 }
 
 function salva() {
@@ -617,7 +620,7 @@ function generaReport(usaGrassetto = false) {
   let macroBlocchi = [];
   const b = usaGrassetto ? "*" : "";
   
-  // 1. MACRO BLOCCO: POSTO DI CONTROLLO
+  // 1. POSTO DI CONTROLLO
   let detPdcPersone = [];
   if (dati.pdcItaNeg > 0) detPdcPersone.push(`${b}${dati.pdcItaNeg}${b} ita neg`);
   if (dati.pdcItaPos > 0) detPdcPersone.push(`${b}${dati.pdcItaPos}${b} ita pos`);
@@ -630,7 +633,7 @@ function generaReport(usaGrassetto = false) {
     macroBlocchi.push(`${b}POSTO DI CONTROLLO:${b} ${b}${dati.pdcTg}${b} tg`);
   }
 
-  // 2. MACRO BLOCCO: APPIEDATI
+  // 2. APPIEDATI
   let detAp = []; 
   if (dati.apItaNeg > 0) detAp.push(`${b}${dati.apItaNeg}${b} ita neg`);
   if (dati.apItaPos > 0) detAp.push(`${b}${dati.apItaPos}${b} ita pos`);
@@ -641,12 +644,12 @@ function generaReport(usaGrassetto = false) {
     macroBlocchi.push(detAp.join(", "));
   }
   
-  // 3. MACRO BLOCCO INDIPENDENTE: TARGHE IN SOSTA
+  // 3. TARGHE IN SOSTA
   if (dati.tgSosta > 0) {
     macroBlocchi.push(`${b}${dati.tgSosta}${b} tg`);
   }
   
-  // 4. MACRO BLOCCO INDIPENDENTE: TARGHE IN TRANSITO
+  // 4. TRANSITO/SOSTA COMPLESSIVO
   let detTransitoPersone = [];
   if (dati.itaNeg > 0) detTransitoPersone.push(`${b}${dati.itaNeg}${b} ita neg`);
   if (dati.itaPos > 0) detTransitoPersone.push(`${b}${dati.itaPos}${b} ita pos`);
@@ -684,9 +687,13 @@ function copiaTesto() {
   const t = generaReport(true); 
   navigator.clipboard.writeText(t).then(() => {
     const btn = document.getElementById("btn-copia");
-    const testoOriginale = btn.innerText;
+    btn.classList.add("copy-success");
+    const vecchioTesto = btn.innerText;
     btn.innerText = "✅ Copiato!";
-    setTimeout(() => { btn.innerText = testoOriginale; }, 1500);
+    setTimeout(() => { 
+      btn.classList.remove("copy-success");
+      btn.innerText = vecchioTesto; 
+    }, 1500);
   }).catch(err => {
     alert("Errore durante la copia.");
   });
