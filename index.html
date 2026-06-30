@@ -348,6 +348,7 @@
   <button class="btn-mode" id="mode-icon" onclick="toggleModalita()">🔴</button>
 </div>
 
+<!-- AUTO IN TRANSITO/SOSTA: BLOCCO TARGHE STANDARD -->
 <div class="top-tg-block">
   <div class="tg-side-btns">
     <button class="plus-sosta btn-tg-v" onclick="cambia('tgSosta',1)">+1 S</button>
@@ -363,6 +364,7 @@
   </div>
 </div>
 
+<!-- AUTO IN TRANSITO/SOSTA: GRIGLIA CENTRALE CONTATORI -->
 <div class="flex-grid">
   <div class="flex-row">
     <div class="card pos-highlight">
@@ -406,6 +408,7 @@
 <button class="btn-trigger-panel btn-pdc" onclick="apriModal('modalPdc')">🚨 Posto di Controllo</button>
 <button class="btn-trigger-panel btn-appiedati" onclick="apriModal('modalAppiedati')">🚶 Appiedati</button>
 
+<!-- FOOTER -->
 <div class="footer">
   <div class="summary" id="riepilogo">Nessun controllo effettuato</div>
   <div class="action-btns">
@@ -416,6 +419,7 @@
   </div>
 </div>
 
+<!-- PANNELLO COMPLAIN: POSTO DI CONTROLLO -->
 <div class="modal-overlay" id="modalPdc">
   <div class="modal-content">
     <h2 style="color:#a78bfa; margin:2px 0 6px 0; font-size:15px;">🚨 Attività Posto di Controllo</h2>
@@ -468,6 +472,7 @@
   </div>
 </div>
 
+<!-- PANNELLO COMPLAIN: APPIEDATI -->
 <div class="modal-overlay" id="modalAppiedati">
   <div class="modal-content">
     <h2 style="color:#38bdf8; margin:4px 0 6px 0; font-size:15px;">Controlli Appiedati</h2>
@@ -493,7 +498,6 @@
       <div class="flex-row">
         <div class="card pos-highlight">
           <h3>Stra Pos</h3>
-          <div class="num" id="val-apStraPos">0</div>
           <div class="num" id="val-apStraPos">0</div>
           <div class="btn-container">
             <button class="minus" onclick="cambia('apStraPos',-1)">-1</button>
@@ -586,16 +590,12 @@ function annulla() {
 function apriModal(id) { feedbackTattico(); document.getElementById(id).style.display = "flex"; }
 function chiudiModal(id) { feedbackTattico(); document.getElementById(id).style.display = "none"; }
 
-// NUOVA LOGICA DI GENERAZIONE REPORT COMPLETA E ISOLATA RIGA PER RIGA
+// FUNZIONE GENERAZIONE RIEPILOGO AGGIORNATA CON ISOLAMENTO TOTALE
 function generaReport(usaGrassetto = false) {
   let macroBlocchi = [];
   const b = usaGrassetto ? "*" : "";
   
-  // ----------------------------------------------------
   // 1. MACRO BLOCCO: POSTO DI CONTROLLO
-  // ----------------------------------------------------
-  let righeInternnPdc = [];
-  
   let detPdcPersone = [];
   if (dati.pdcItaNeg > 0) detPdcPersone.push(`${b}${dati.pdcItaNeg}${b} ita neg`);
   if (dati.pdcItaPos > 0) detPdcPersone.push(`${b}${dati.pdcItaPos}${b} ita pos`);
@@ -603,22 +603,12 @@ function generaReport(usaGrassetto = false) {
   if (dati.pdcStraNeg > 0) detPdcPersone.push(`${b}${dati.pdcStraNeg}${b} stra neg`);
   
   if (detPdcPersone.length > 0) {
-    // Ci sono persone controllate: abbiniamo il conteggio dei veicoli con occupanti
-    let stringaPdcVeicoliConPersone = `${b}${dati.pdcTg}${b} tg`;
-    stringaPdcVeicoliConPersone += ` con ${detPdcPersone.join(", ")}`;
-    righeInternnPdc.push(stringaPdcVeicoliConPersone);
+    macroBlocchi.push(`${b}POSTO DI CONTROLLO:${b} ${b}${dati.pdcTg}${b} tg con ${detPdcPersone.join(", ")}`);
   } else if (dati.pdcTg > 0) {
-    // Ci sono solo veicoli puri senza dettagli persone registrate nel pannello
-    righeInternnPdc.push(`${b}${dati.pdcTg}${b} tg`);
+    macroBlocchi.push(`${b}POSTO DI CONTROLLO:${b} ${b}${dati.pdcTg}${b} tg`);
   }
 
-  if (righeInternnPdc.length > 0) {
-    macroBlocchi.push(`${b}POSTO DI CONTROLLO:${b} ${righeInternnPdc.join("\n")}`);
-  }
-
-  // ----------------------------------------------------
   // 2. MACRO BLOCCO: APPIEDATI
-  // ----------------------------------------------------
   let detAp = []; 
   if (dati.apItaNeg > 0) detAp.push(`${b}${dati.apItaNeg}${b} ita neg`);
   if (dati.apItaPos > 0) detAp.push(`${b}${dati.apItaPos}${b} ita pos`);
@@ -629,16 +619,12 @@ function generaReport(usaGrassetto = false) {
     macroBlocchi.push(detAp.join(", "));
   }
   
-  // ----------------------------------------------------
-  // 3. MACRO BLOCCO: TRANSITO / SOSTA
-  // ----------------------------------------------------
-  let righeInterneTransitoSosta = [];
-  
-  // Le auto in sosta sono isolate ed escono SEMPRE per prime su riga dedicata
+  // 3. MACRO BLOCCO INDIPENDENTE: TARGHE IN SOSTA
   if (dati.tgSosta > 0) {
-    righeInterneTransitoSosta.push(`${b}${dati.tgSosta}${b} tg`);
+    macroBlocchi.push(`${b}${dati.tgSosta}${b} tg`);
   }
   
+  // 4. MACRO BLOCCO INDIPENDENTE: TARGHE IN TRANSITO
   let detTransitoPersone = [];
   if (dati.itaNeg > 0) detTransitoPersone.push(`${b}${dati.itaNeg}${b} ita neg`);
   if (dati.itaPos > 0) detTransitoPersone.push(`${b}${dati.itaPos}${b} ita pos`);
@@ -646,21 +632,12 @@ function generaReport(usaGrassetto = false) {
   if (dati.straNeg > 0) detTransitoPersone.push(`${b}${dati.straNeg}${b} stra neg`);
   
   if (detTransitoPersone.length > 0) {
-    // Ci sono persone: stampiamo la riga dei veicoli in transito abbinata alle persone
-    let stringaTgTransitoConPersone = `${b}${dati.tg}${b} tg`;
-    stringaTgTransitoConPersone += ` con ${detTransitoPersone.join(", ")}`;
-    righeInterneTransitoSosta.push(stringaTgTransitoConPersone);
+    macroBlocchi.push(`${b}${dati.tg}${b} tg con ${detTransitoPersone.join(", ")}`);
   } else if (dati.tg > 0) {
-    // Solo auto in transito pure senza persone associate
-    righeInterneTransitoSosta.push(`${b}${dati.tg}${b} tg`);
+    macroBlocchi.push(`${b}${dati.tg}${b} tg`);
   }
 
-  if (righeInterneTransitoSosta.length > 0) {
-    // Uniamo sosta e transiti usando un semplice "a capo" (\n) interno alla categoria
-    macroBlocchi.push(righeInterneTransitoSosta.join("\n"));
-  }
-
-  // Uniamo le 3 macro categorie (Pdc, Appiedati, Transito/Sosta) con una riga vuota (\n\n)
+  // Uniamo tutti i macro blocchi attivi separandoli rigidamente con una doppia linea (\n\n)
   return macroBlocchi.length > 0 ? macroBlocchi.join("\n\n") : "Nessun controllo effettuato";
 }
 
