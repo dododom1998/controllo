@@ -494,6 +494,7 @@
         <div class="card pos-highlight">
           <h3>Stra Pos</h3>
           <div class="num" id="val-apStraPos">0</div>
+          <div class="num" id="val-apStraPos">0</div>
           <div class="btn-container">
             <button class="minus" onclick="cambia('apStraPos',-1)">-1</button>
             <button class="plus" onclick="cambia('apStraPos',1)">+1</button>
@@ -585,42 +586,58 @@ function annulla() {
 function apriModal(id) { feedbackTattico(); document.getElementById(id).style.display = "flex"; }
 function chiudiModal(id) { feedbackTattico(); document.getElementById(id).style.display = "none"; }
 
+// NUOVA LOGICA DI GENERAZIONE REPORT COMPLETA E ISOLATA RIGA PER RIGA
 function generaReport(usaGrassetto = false) {
-  let blocchi = [];
+  let macroBlocchi = [];
   const b = usaGrassetto ? "*" : "";
   
-  // 1. BLOCCO POSTO DI CONTROLLO (Solo Targhe in Transito + Persone)
-  let righePdc = [];
+  // ----------------------------------------------------
+  // 1. MACRO BLOCCO: POSTO DI CONTROLLO
+  // ----------------------------------------------------
+  let righeInternnPdc = [];
+  
   let detPdcPersone = [];
   if (dati.pdcItaNeg > 0) detPdcPersone.push(`${b}${dati.pdcItaNeg}${b} ita neg`);
   if (dati.pdcItaPos > 0) detPdcPersone.push(`${b}${dati.pdcItaPos}${b} ita pos`);
   if (dati.pdcStraPos > 0) detPdcPersone.push(`${b}${dati.pdcStraPos}${b} stra pos`);
   if (dati.pdcStraNeg > 0) detPdcPersone.push(`${b}${dati.pdcStraNeg}${b} stra neg`);
   
-  if (dati.pdcTg > 0) {
-    let stringaTg = `${b}${dati.pdcTg}${b} tg`;
-    if (detPdcPersone.length > 0) stringaTg += ` con ${detPdcPersone.join(", ")}`;
-    righePdc.push(stringaTg);
-  } else if (detPdcPersone.length > 0) {
-    righePdc.push(detPdcPersone.join(", "));
-  }
-  if (righePdc.length > 0) {
-    blocchi.push(`${b}POSTO DI CONTROLLO:${b} ${righePdc.join(", ")}`);
+  if (detPdcPersone.length > 0) {
+    // Ci sono persone controllate: abbiniamo il conteggio dei veicoli con occupanti
+    let stringaPdcVeicoliConPersone = `${b}${dati.pdcTg}${b} tg`;
+    stringaPdcVeicoliConPersone += ` con ${detPdcPersone.join(", ")}`;
+    righeInternnPdc.push(stringaPdcVeicoliConPersone);
+  } else if (dati.pdcTg > 0) {
+    // Ci sono solo veicoli puri senza dettagli persone registrate nel pannello
+    righeInternnPdc.push(`${b}${dati.pdcTg}${b} tg`);
   }
 
-  // 2. BLOCCO APPIEDATI
+  if (righeInternnPdc.length > 0) {
+    macroBlocchi.push(`${b}POSTO DI CONTROLLO:${b} ${righeInternnPdc.join("\n")}`);
+  }
+
+  // ----------------------------------------------------
+  // 2. MACRO BLOCCO: APPIEDATI
+  // ----------------------------------------------------
   let detAp = []; 
   if (dati.apItaNeg > 0) detAp.push(`${b}${dati.apItaNeg}${b} ita neg`);
   if (dati.apItaPos > 0) detAp.push(`${b}${dati.apItaPos}${b} ita pos`);
   if (dati.apStraPos > 0) detAp.push(`${b}${dati.apStraPos}${b} stra pos`);
   if (dati.apStraNeg > 0) detAp.push(`${b}${dati.apStraNeg}${b} stra neg`);
+  
   if (detAp.length > 0) {
-    blocchi.push(detAp.join(", "));
+    macroBlocchi.push(detAp.join(", "));
   }
   
-  // 3. BLOCCO TRANSITO/SOSTA
-  let righeTransitoSosta = [];
-  if (dati.tgSosta > 0) righeTransitoSosta.push(`${b}${dati.tgSosta}${b} tg`);
+  // ----------------------------------------------------
+  // 3. MACRO BLOCCO: TRANSITO / SOSTA
+  // ----------------------------------------------------
+  let righeInterneTransitoSosta = [];
+  
+  // Le auto in sosta sono isolate ed escono SEMPRE per prime su riga dedicata
+  if (dati.tgSosta > 0) {
+    righeInterneTransitoSosta.push(`${b}${dati.tgSosta}${b} tg`);
+  }
   
   let detTransitoPersone = [];
   if (dati.itaNeg > 0) detTransitoPersone.push(`${b}${dati.itaNeg}${b} ita neg`);
@@ -628,19 +645,23 @@ function generaReport(usaGrassetto = false) {
   if (dati.straPos > 0) detTransitoPersone.push(`${b}${dati.straPos}${b} stra pos`);
   if (dati.straNeg > 0) detTransitoPersone.push(`${b}${dati.straNeg}${b} stra neg`);
   
-  if (dati.tg > 0) {
-    let stringaTgTransito = `${b}${dati.tg}${b} tg`;
-    if (detTransitoPersone.length > 0) stringaTgTransito += ` con ${detTransitoPersone.join(", ")}`;
-    righeTransitoSosta.push(stringaTgTransito);
-  } else if (detTransitoPersone.length > 0) {
-    righeTransitoSosta.push(detTransitoPersone.join(", "));
+  if (detTransitoPersone.length > 0) {
+    // Ci sono persone: stampiamo la riga dei veicoli in transito abbinata alle persone
+    let stringaTgTransitoConPersone = `${b}${dati.tg}${b} tg`;
+    stringaTgTransitoConPersone += ` con ${detTransitoPersone.join(", ")}`;
+    righeInterneTransitoSosta.push(stringaTgTransitoConPersone);
+  } else if (dati.tg > 0) {
+    // Solo auto in transito pure senza persone associate
+    righeInterneTransitoSosta.push(`${b}${dati.tg}${b} tg`);
   }
 
-  if (righeTransitoSosta.length > 0) {
-    blocchi.push(righeTransitoSosta.join(", "));
+  if (righeInterneTransitoSosta.length > 0) {
+    // Uniamo sosta e transiti usando un semplice "a capo" (\n) interno alla categoria
+    macroBlocchi.push(righeInterneTransitoSosta.join("\n"));
   }
 
-  return blocchi.length > 0 ? blocchi.join("\n\n") : "Nessun controllo effettuato";
+  // Uniamo le 3 macro categorie (Pdc, Appiedati, Transito/Sosta) con una riga vuota (\n\n)
+  return macroBlocchi.length > 0 ? macroBlocchi.join("\n\n") : "Nessun controllo effettuato";
 }
 
 function aggiornaSchermata() {
