@@ -31,6 +31,7 @@
   html {
     background-color: #000000; 
     height: -webkit-fill-available;
+    overflow: hidden; /* Blocca rimbalzi Safari */
   }
 
   body {
@@ -185,7 +186,7 @@
   body.red-mode .num { color: #fca5a5; }
   body.red-mode .card.pos-highlight .num { color: #ef4444; }
   
-  /* DISTRIBUZIONE ASIMMETRICA TASTI (80% / 20%) */
+  /* DISTRIBUZIONE TASTI */
   .btn-container {
     display: flex;
     gap: 4px;
@@ -280,7 +281,7 @@
   .whatsapp { background: #16a34a; color: white; flex: 1.1; font-size: 14px; border-radius: 8px; height: 100%; }
   .copy-btn { background: #0284c7; color: white; flex: 1.1; font-size: 14px; border-radius: 8px; height: 100%; }
   .undo { background: #4b5563; color: white; flex: 0.5; font-size: 18px; border-radius: 8px; height: 100%; }
-  .reset { background: #b45309; color: white; flex: 0.5; font-size: 18px; border-radius: 8px; height: 100%; }
+  .reset { background: #b45309; color: white; flex: 0.5; font-size: 18px; border-radius: 8px; height: 100%; margin-left: 6px; } /* Più distanziato */
 
   body.red-mode .whatsapp { background: #064e3b; color: #a7f3d0; }
   body.red-mode .copy-btn { background: #0369a1; color: #bae6fd; }
@@ -309,6 +310,22 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+    position: relative;
+  }
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 4px;
+  }
+  .btn-close-x {
+    background: none;
+    border: 0;
+    color: #64748b;
+    font-size: 20px;
+    padding: 4px 8px;
+    cursor: pointer;
   }
   .btn-chiudi-modal {
     background: #0f766e;
@@ -422,7 +439,10 @@
 <!-- PANNELLO COMPLAIN: POSTO DI CONTROLLO -->
 <div class="modal-overlay" id="modalPdc">
   <div class="modal-content">
-    <h2 style="color:#a78bfa; margin:2px 0 6px 0; font-size:15px;">🚨 Attività Posto di Controllo</h2>
+    <div class="modal-header">
+      <h2 style="color:#a78bfa; margin:0; font-size:15px;">🚨 Attività Posto di Controllo</h2>
+      <button class="btn-close-x" onclick="chiudiModal('modalPdc')">✕</button>
+    </div>
     
     <div class="pdc-tg-block">
       <button class="minus" style="height:48px; width:48px; border-radius:8px;" onclick="cambia('pdcTg',-1)">-1</button>
@@ -475,7 +495,10 @@
 <!-- PANNELLO COMPLAIN: APPIEDATI -->
 <div class="modal-overlay" id="modalAppiedati">
   <div class="modal-content">
-    <h2 style="color:#38bdf8; margin:4px 0 6px 0; font-size:15px;">Controlli Appiedati</h2>
+    <div class="modal-header">
+      <h2 style="color:#38bdf8; margin:0; font-size:15px;">Controlli Appiedati</h2>
+      <button class="btn-close-x" onclick="chiudiModal('modalAppiedati')">✕</button>
+    </div>
     <div style="display: flex; flex-direction: column; gap: 6px; flex-grow: 1; margin-bottom:8px;">
       <div class="flex-row">
         <div class="card pos-highlight">
@@ -491,7 +514,7 @@
           <div class="num" id="val-apItaNeg">0</div>
           <div class="btn-container">
             <button class="minus" onclick="cambia('apItaNeg',-1)">-1</button>
-            <button class="plus" onclick="cambia('apItaPos',1)">+1</button>
+            <button class="plus" onclick="cambia('apItaNeg',1)">+1</button>
           </div>
         </div>
       </div>
@@ -590,7 +613,6 @@ function annulla() {
 function apriModal(id) { feedbackTattico(); document.getElementById(id).style.display = "flex"; }
 function chiudiModal(id) { feedbackTattico(); document.getElementById(id).style.display = "none"; }
 
-// FUNZIONE GENERAZIONE RIEPILOGO AGGIORNATA CON ISOLAMENTO TOTALE
 function generaReport(usaGrassetto = false) {
   let macroBlocchi = [];
   const b = usaGrassetto ? "*" : "";
@@ -637,7 +659,6 @@ function generaReport(usaGrassetto = false) {
     macroBlocchi.push(`${b}${dati.tg}${b} tg`);
   }
 
-  // Uniamo tutti i macro blocchi attivi separandoli rigidamente con una doppia linea (\n\n)
   return macroBlocchi.length > 0 ? macroBlocchi.join("\n\n") : "Nessun controllo effettuato";
 }
 
